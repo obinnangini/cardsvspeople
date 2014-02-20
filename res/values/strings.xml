@@ -4,5 +4,8 @@
     <string name="app_name">cardsvspeople</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="game_start_text">New Game!</string>
+    <string name="welcome_message"> Welcome User!</string>
+    <string name="help_button_message">Help</string>
 
 </resources>

@@ -7,10 +7,24 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MenuActivity" >
+    
+    <TextView 
+        android:id="@+id/bannertext"
+        android:text="@string/welcome_message" 
+        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+    <Button 
+        android:id="@+id/game_start_button"
+        android:layout_below="@+id/bannertext"
+     	android:text= "@string/game_start_text"
+     	android:onClick="startGame"
+          />
+    <Button 
+        android:id= "@+id/help_button"
+       	android:layout_below="@+id/game_start_button"
+        android:text="@string/help_button_message"
+        android:onClick="displayHelpMessage"
+     
+        />
 
 </RelativeLayout>
