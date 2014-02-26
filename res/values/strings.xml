@@ -7,5 +7,6 @@
     <string name="game_start_text">New Game!</string>
     <string name="welcome_message"> Welcome User!</string>
     <string name="help_button_message">Help</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>
