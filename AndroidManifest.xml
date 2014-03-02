@@ -18,9 +18,8 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.example.cardsvspeople.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:name="com.example.cardsvspeople.MenuActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,8 +27,8 @@
             </intent-filter>
         </activity>
         <activity
-             android:name="com.example.cardsvspeople.MenuActivity"
-            android:label="@string/app_name" >
+            android:name="com.example.cardsvspeople.GameActivity"
+            android:label="@string/title_activity_game" >
         </activity>
     </application>
 

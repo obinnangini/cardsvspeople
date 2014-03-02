@@ -10,21 +10,42 @@
     
     <TextView 
         android:id="@+id/bannertext"
+        android:textSize="14sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/welcome_message" 
         />
-
     <Button 
         android:id="@+id/game_start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/bannertext"
      	android:text= "@string/game_start_text"
-     	android:onClick="startGame"
           />
+    
+    <TextView
+        android:id="@+id/ongoing"
+        android:layout_below="@+id/game_start_button"
+        android:textSize="14sp"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" 
+        />
+    
+    <!-- List View to show ongoing games, to be populated in app at some time -->
+    <ListView
+        android:id="@+id/listview"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/ongoing"
+        >  
+    </ListView>
     <Button 
         android:id= "@+id/help_button"
-       	android:layout_below="@+id/game_start_button"
+       	android:layout_below="@+id/listview"
+       	android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/help_button_message"
-        android:onClick="displayHelpMessage"
-     
         />
 
 </RelativeLayout>
