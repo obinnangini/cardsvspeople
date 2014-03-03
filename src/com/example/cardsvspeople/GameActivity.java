@@ -22,20 +22,22 @@ public class GameActivity extends Activity {
 		getMenuInflater().inflate(R.menu.game, menu);
 		return true;
 	}
-	protected void OnStart()
+	@Override
+	protected void onStart()
 	{
 		super.onStart();
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " started." );
 	}
-	
-	protected void OnPause()
+	@Override
+	protected void onPause()
 	{
 		super.onPause();
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " paused." );
 	}
-	protected void OnResume()
+	@Override
+	protected void onResume()
 	{
 		super.onResume();
 		String currentactivity = this.getClass().getSimpleName();

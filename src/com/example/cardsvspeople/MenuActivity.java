@@ -5,6 +5,7 @@ import java.util.jar.Attributes.Name;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+//import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -43,17 +44,19 @@ public class MenuActivity extends Activity{// implements OnClickListener {
 	}
 	protected void OnStart()
 	{
-		super.onStart();
+		//super.onStart();
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " started." );
 	}
-	protected void OnPause()
+	@Override
+	protected void onPause()
 	{
-		//super.onPause();
+		super.onPause();
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " paused." );
 	}
-	protected void OnResume()
+	@Override
+	public void onResume() 
 	{
 		super.onResume();
 		String currentactivity = this.getClass().getSimpleName();
