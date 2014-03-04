@@ -20,4 +20,9 @@ public class Round
 	{
 		cards.add(card);
 	}
+	
+	public List<WhiteCard> getCards()
+	{
+		return this.cards;
+	}
 }
