@@ -5,9 +5,15 @@ import java.util.ArrayList;
 
 
 
+
+
+
+import java.util.Map;
+
 import org.lucasr.twowayview.TwoWayView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,17 +26,18 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class GameActivity extends Activity {
-
+	int purgcounter = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " created." );
-		String userName = getIntent().getStringExtra("name");
+		String gameName = getIntent().getStringExtra("name");
 		
 		
 		//Load some data into the game
@@ -38,19 +45,133 @@ public class GameActivity extends Activity {
 		currGame.CreateGame();
 		currGame.StartRound();
 		//Get hand for a specific player for display purposes
+		
 		//Also get current black card text for display
 		Round currRound = currGame.getCurrentRound();
 		/*
 		 * Display dealer view if the player is the dealer.
 		 */
-		if (currGame.getDealer().getUserName().equals(userName))
+		//Get player for testing purposes
+		Player testplayer = null;
+		for(int x = 0; x< Game.players.size(); x++)
 		{
+			if (Game.players.get(x).getGameName().equals(gameName))
+			{
+				testplayer = Game.players.get(x);
+				Log.d("Player selected", testplayer.getGameName() + " index is " + x);
+				break;
+			}
+		}
+		if (currGame.getDealer().getGameName().equals(gameName))
+		{
+			setContentView(R.layout.dealerview);
+			//Hardcoded generation of round
+			currGame.FinalizeRound();
+			Map <Player,WhiteCard> roundmap = currRound.getCards();
+			ArrayList<String> dealerlisttext = new ArrayList<String>();
+			for (Player pl: roundmap.keySet())
+			{
+				dealerlisttext.add(roundmap.get(pl).getText());
+			}
 			
+			TextView blackcardtext = (TextView) findViewById(R.id.dealer_black_card);
+			blackcardtext.setText(currRound.getBlackCard().getText());
+			blackcardtext.setOnClickListener(new OnClickListener() 
+			{
+				@Override
+				public void onClick(View v) {
+					if(v.getId() == R.id.dealer_black_card)
+					{
+						Log.d("Black Card", "Dialog should be launched");
+						//Launch popup window showing card details 
+						View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
+						TextView temp = (TextView) findViewById(R.id.dealer_black_card);
+						TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
+						tView.setText(temp.getText().toString());
+						tView.setTextColor(getResources().getColor(R.color.white));
+						tView.setBackgroundColor(getResources().getColor(R.color.black));
+						
+						Log.d("Black Card", "View prepared");
+						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
+						alertDialogBuilder.setView(v1);
+						alertDialogBuilder
+							.setPositiveButton("OK",
+									new DialogInterface.OnClickListener() {
+										
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											// TODO Auto-generated method stub
+											dialog.cancel();
+										}
+									});
+						Log.d("Black Card", "Positive button set");
+						// create alert dialog
+						AlertDialog alertDialog = alertDialogBuilder.create();
+						WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+					    lp.copyFrom(alertDialog.getWindow().getAttributes());
+					    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+					    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+		 
+						// show it
+						alertDialog.show();
+						Log.d("Black Card", "View showing");
+					}
+				}
+			});
+			//Setting listview adapter and reaction to selection
+			final String[] dealerarray = dealerlisttext.toArray(new String[dealerlisttext.size()]);
+			
+			TwoWayView listView = (TwoWayView) findViewById(R.id.dealercardlist);
+			listView.setAdapter(new UserHandAdapter(getApplicationContext(), dealerarray));
+			listView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+						long arg3) {
+					// TODO Auto-generated method stub
+					//Log.d("Card selected", "Dialog should be launched");
+					
+					//Launch popup window showing card details 
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
+					View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
+					
+					TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
+					tView.setText(dealerarray[arg2]);
+					
+					alertDialogBuilder.setView(v1);
+					//Log.d("Textview", handarray[arg2]);
+					//alertDialogBuilder.setMessage("Test message");
+					alertDialogBuilder
+						.setPositiveButton("Select Card",
+								new DialogInterface.OnClickListener() {
+									
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										// TODO Auto-generated method stub
+										//Change this to actually submit a card
+										dialog.cancel();
+									}
+								});
+					
+					// create alert dialog
+					AlertDialog alertDialog = alertDialogBuilder.create();
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				    lp.copyFrom(alertDialog.getWindow().getAttributes());
+				    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+				    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+				 
+					// show it
+					alertDialog.show();
+				
+					
+				}
+			});;
 		}
 		else 
 		{
 			//Show game view
 			setContentView(R.layout.activity_game);
+			//Also get current black card text for display
 			TextView blackcardtext = (TextView) findViewById(R.id.black_card);
 			blackcardtext.setText(currRound.getBlackCard().getText());
 			blackcardtext.setOnClickListener(new OnClickListener() 
@@ -96,10 +217,22 @@ public class GameActivity extends Activity {
 					
 				}
 			});
-		
+			
+			//Handle click of submit button
+			
+			Button submit =(Button) findViewById(R.id.submit_card);
 			int numCards = currRound.getBlackCard().getCardsNeeded();
+			submit.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					//Before calling submit, make sure that number of cards in purgatory
+					//match numer of cards needed.
+				}
+			});
 			ArrayList<WhiteCard> playerhand = new ArrayList<WhiteCard>();
-			playerhand = Game.players.get(0).getHand();
+			playerhand = testplayer.getHand();
 			ArrayList<String> playerhandtext = new ArrayList<String>();
 			for (int x = 0; x< playerhand.size();x++)
 			{

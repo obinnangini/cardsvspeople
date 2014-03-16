@@ -91,4 +91,12 @@ public class Game
 		return this.dealer;
 	}
 	
+	public void FinalizeRound()
+	{
+		current.SubmitCard(players.get(0), new WhiteCard("The hardworking Mexican."));
+		current.SubmitCard(players.get(1), new WhiteCard("An Oedipus complex."));
+		current.SubmitCard(players.get(2), new WhiteCard("A tiny horse."));
+		current.SubmitCard(players.get(3), new WhiteCard("Boogers."));
+	}
+	
 }
