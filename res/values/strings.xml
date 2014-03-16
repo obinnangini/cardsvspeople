@@ -10,7 +10,9 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="help_message">The game is simple. Each round, one player asks a question from a Black Card, and everyone else answers with their funniest White Card.</string>
-	<string name="gameactivity">This layout will show the game view</string>
-	<string name="ongoing_game">Ongoing Games</string>
-	
+    <string name="gameactivity">This layout will show the game view</string>
+    <string name="ongoing_game">Ongoing Games</string>
+    <string name="testtext">Sample Text</string>
+    <string name="submittext">Submit </string>
+
 </resources>
