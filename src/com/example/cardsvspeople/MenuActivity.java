@@ -67,7 +67,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 			{
 				//Use an intent to start game Activity, and pass user's game name
 				//Fetch game name from user class, or server
-				String gameName = "Brandon";
+				String gameName = "Obinna";//For user view
+				//String gameName = "Brandon";//To see dealer view
 				Intent intent = new Intent(MenuActivity.this,GameActivity.class);
 				intent.putExtra("name", gameName);
 				startActivity(intent);
