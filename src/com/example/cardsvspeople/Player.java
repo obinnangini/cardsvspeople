@@ -7,7 +7,7 @@ import java.util.List;
 public class Player 
 {
 	String gameName = "";
-	List<WhiteCard> hand = new ArrayList<WhiteCard>();
+	ArrayList<WhiteCard> hand = new ArrayList<WhiteCard>();
 	int currentScore = 0;
 	String userName= "";
 	
@@ -19,14 +19,14 @@ public class Player
 	
 	public String getUserName()
 	{
-		return userName;
+		return this.userName;
 	}
 	
 	public String getGameName()
 	{
-		return gameName;
+		return this.gameName;
 	}
-	public List<WhiteCard> getHand()
+	public ArrayList<WhiteCard> getHand()
 	{
 		return this.hand;
 	}
@@ -38,16 +38,16 @@ public class Player
 	
 	public void AddtoHand(WhiteCard card)
 	{
-		hand.add(card);
+		this.hand.add(card);
 	}
 	
 	public void RemovefromHand(WhiteCard card)
 	{
-		hand.remove(card);
+		this.hand.remove(card);
 	}
 	public void increaseScore()
 	{
-		currentScore++;
+		this.currentScore++;
 	}
 	
 }
