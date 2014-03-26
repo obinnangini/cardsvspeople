@@ -8,11 +8,14 @@
     <string name="welcome_message"> Welcome User!</string>
     <string name="help_button_message">Help</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="player_location">PlayerLocation</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="help_message">The game is simple. Each round, one player asks a question from a Black Card, and everyone else answers with their funniest White Card. First to win six rounds wins the game!</string>
     <string name="gameactivity">This layout will show the game view</string>
     <string name="ongoing_game">Ongoing Games</string>
     <string name="testtext">Sample Text</string>
     <string name="submittext">Submit </string>
+    <string name="active_players">Active Player List</string>
+    <string name="request_players">Request selected players to play a game</string>
 
 </resources>
