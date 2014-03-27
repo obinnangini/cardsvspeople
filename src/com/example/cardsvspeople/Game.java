@@ -42,10 +42,10 @@ public class Game
 		blackdeck.add(new BlackCard("I got 99 problems but _______________________ ain't one"));
 	
 		
-		players.add(new Player("user1", "Brandon"));
-		players.add(new Player("user2", "Santosh"));
-		players.add(new Player("user3", "Obinna"));
-		players.add(new Player("user4", "Xiaoran"));
+		players.add(new Player("user1", "Brandon",false));
+		players.add(new Player("user2", "Santosh",false));
+		players.add(new Player("user3", "Obinna", false));
+		players.add(new Player("user4", "Xiaoran",false));
 		
 		
 		

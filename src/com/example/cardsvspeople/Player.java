@@ -1,7 +1,6 @@
 package com.example.cardsvspeople;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class Player 
@@ -10,11 +9,13 @@ public class Player
 	ArrayList<WhiteCard> hand = new ArrayList<WhiteCard>();
 	int currentScore = 0;
 	String userName= "";
+	Boolean selected = false;
 	
-	public Player(String userName, String gameName)
+	public Player(String userName, String gameName, Boolean selected)
 	{
 		this.userName = userName;
 		this.gameName = gameName;
+		this.selected = selected;
 	}
 	
 	public String getUserName()
@@ -48,6 +49,12 @@ public class Player
 	public void increaseScore()
 	{
 		this.currentScore++;
+	}
+	public boolean isSelected(){
+		return selected;
+	}
+	public void setSelected(Boolean selected){
+		this.selected = selected;
 	}
 	
 }

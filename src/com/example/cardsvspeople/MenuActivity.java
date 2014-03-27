@@ -69,7 +69,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 				//Fetch game name from user class, or server
 				String gameName = "Obinna";//For user view
 				//String gameName = "Brandon";//To see dealer view
-				Intent intent = new Intent(MenuActivity.this,GameActivity.class);
+				Intent intent = new Intent(MenuActivity.this,PlayerLocation.class);
 				intent.putExtra("name", gameName);
 				startActivity(intent);
 				break;
