@@ -17,5 +17,11 @@
     <string name="submittext">Submit </string>
     <string name="active_players">Active Player List</string>
     <string name="request_players">Request selected players to play a game</string>
-
+     <string name="username">Username:</string>
+   <string name="password">Password:</string>
+   <string name="Login">Log In</string>
+   <string name="Register">Register</string>
+   <string name="attempts">Attempts Left:</string>
+    <string name="Signup">Sign up</string>
+ <string name="Cheat">Cheat</string>
 </resources>
