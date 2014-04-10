@@ -35,6 +35,9 @@ import org.lucasr.twowayview.TwoWayView;
 
 
 
+
+import com.example.cardsvspeople.R.id;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -59,10 +62,11 @@ import android.widget.Toast;
 
 //Problem is, the values of these data structures arent being updated. I should return an instance of the Game class instead.
 //FIX TOMORROW!!!!!!!!!!!!!!!!!!!!!
-public class GameActivity extends Activity {
+public class GameActivity extends Activity implements OnClickListener {
 
 //	ArrayList<ArrayList<String>> playerhands = new ArrayList<ArrayList<String>>();
 	UserHandAdapter adapter;
+	Player pl= null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -77,7 +81,6 @@ public class GameActivity extends Activity {
 		Log.d("Obinna", "Username is " + username);
 		Log.d("Obinna", "Gamename is " + gamename);
 		Log.d("Life cycle notes", currentactivity + " created." );
-		
 		/**
 		 * Need to fetch game instance from server, if number position is given, else, 
 		 * create new game instance and fetch decks from server
@@ -239,7 +242,7 @@ public class GameActivity extends Activity {
 			e.printStackTrace();
 		}
 		Game currGame = bunds.getGame();
-		final Player pl = bunds.getPlayer();
+		pl = bunds.getPlayer();
 		Log.d("Obinna", "AsyncTask done!" );
 		Log.d("Obinna", "Usernames size is " + Integer.toString(currGame.getPlayers().size()));
 		//Log.d("Obinna", "Gamenames size is " + Integer.toString(gamenames.size()));
@@ -318,7 +321,6 @@ public class GameActivity extends Activity {
 						WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 					    lp.copyFrom(alertDialog.getWindow().getAttributes());
 					    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-					    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
 		 
 						// show it
 						alertDialog.show();
@@ -375,7 +377,6 @@ public class GameActivity extends Activity {
 					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 				    lp.copyFrom(alertDialog.getWindow().getAttributes());
 				    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-				    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
 				 
 					// show it
 					alertDialog.show();
@@ -389,6 +390,15 @@ public class GameActivity extends Activity {
 			//Show game view
 			setContentView(R.layout.activity_game);
 			//Also get current black card text for display
+			Button submitButton = (Button) findViewById(R.id.submit_card);
+			submitButton.setOnClickListener(this);
+			TextView purg = (TextView) findViewById(R.id.purg_1);
+			purg.setOnClickListener(this);
+			purg = (TextView) findViewById(R.id.purg_2);
+			purg.setOnClickListener(this);
+			purg = (TextView) findViewById(R.id.purg_3);
+			purg.setOnClickListener(this);
+			Log.d("Obinna", "Got past listener sset");
 			TextView blackcardtext = (TextView) findViewById(R.id.black_card);
 			blackcardtext.setText(currGame.getCurrentRound().getBlackCard().getText());
 			blackcardtext.setOnClickListener(new OnClickListener() 
@@ -425,7 +435,6 @@ public class GameActivity extends Activity {
 						WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 					    lp.copyFrom(alertDialog.getWindow().getAttributes());
 					    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-					    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
 		 
 						// show it
 						alertDialog.show();
@@ -545,8 +554,6 @@ public class GameActivity extends Activity {
 					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 				    lp.copyFrom(alertDialog.getWindow().getAttributes());
 				    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-				    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-				 
 					// show it
 					alertDialog.show();
 				
@@ -585,6 +592,104 @@ public class GameActivity extends Activity {
 		super.onResume();
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " resumed." );
+	}
+
+	@Override
+	public void onClick(final View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId())
+		{
+			case R.id.purg_1:
+			case R.id.purg_2:
+			case R.id.purg_3:
+			{
+				final String text = ((TextView) v).getText().toString();
+				//((TextView) v).setText("");
+				if(!(text.equals("")))
+				{
+					//Launch AlertDialog to allow user remove card from purgatory
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
+					View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
+					TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
+					//String tviewtextString = handarray[arg2];
+					tView.setText(text);
+					
+					alertDialogBuilder.setView(v1);
+					//Log.d("Textview", handarray[arg2]);
+					//alertDialogBuilder.setMessage("Test message");
+					alertDialogBuilder
+					.setPositiveButton("Remove Card",
+							new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									//Remove from purgatory and add back to player hand
+									
+									pl.AddtoHand(new WhiteCard(text));
+									//sLog.d("Obinna", "PLayer hand sze is " + pl.getHand().size());
+									ArrayList<String> playerhandtext = new ArrayList<String>();
+									for (WhiteCard card : pl.getHand())
+									{
+										playerhandtext.add(card.getText());
+									}
+									String [] array = playerhandtext.toArray(new String[playerhandtext.size()]);
+									Log.d("Obinna",Integer.toString(array.length));
+									TwoWayView listView = (TwoWayView) findViewById(R.id.userhandlist);
+									adapter = new UserHandAdapter(getApplicationContext(), array);
+									listView.setAdapter(adapter);
+									((TextView)v).setText("");
+									
+								}
+							});
+					alertDialogBuilder.
+					setNegativeButton("Cancel", new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// Get rid of dialog
+							dialog.cancel();
+						}
+					});
+					AlertDialog alertDialog = alertDialogBuilder.create();
+					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				    lp.copyFrom(alertDialog.getWindow().getAttributes());
+				    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+					// show it
+					alertDialog.show();
+				}
+				break;
+				
+			}
+			case R.id.submit_card:
+			{
+				ArrayList<String> cardstosubmit = new ArrayList<String>();
+				//Submit cards to round and clear purgatory spots
+				TextView purg1 = (TextView) findViewById(R.id.purg_1);
+				String purg1text = purg1.getText().toString();
+				if(!(purg1text.equals("")))
+				{
+					cardstosubmit.add(purg1text);
+				}
+				TextView purg2 = (TextView) findViewById(R.id.purg_2);
+				String purg2text = purg2.getText().toString();
+				if(!(purg2text.equals("")))
+				{
+					cardstosubmit.add(purg2text);
+				}
+				TextView purg3 = (TextView) findViewById(R.id.purg_3);
+				String purg3text = purg3.getText().toString();
+				if(!(purg3text.equals("")))
+				{
+					cardstosubmit.add(purg3text);
+				}
+				//Send cardstosubmit to server, clear textviews
+				purg1.setText("");
+				purg2.setText("");
+				purg3.setText("");
+				break;
+			}
+		}
 	}
 
 

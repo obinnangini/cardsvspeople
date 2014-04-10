@@ -38,9 +38,9 @@ public class UserHandAdapter extends BaseAdapter
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
 		// TODO Auto-generated method stub
-		
-		if(arg1 == null)
-		{
+//		
+//		if(arg1 == null)
+//		{
 			arg1= inflater.inflate(R.layout.whitecard, null);
 			TextView title = (TextView) arg1.findViewById(R.id.card_text);
 			
@@ -48,8 +48,8 @@ public class UserHandAdapter extends BaseAdapter
 			//Set text of layoiut 
 			title.setText(cardtext[arg0]);
 		
-		}
-		
+//		}
+//		
 		return arg1;
 	}
 

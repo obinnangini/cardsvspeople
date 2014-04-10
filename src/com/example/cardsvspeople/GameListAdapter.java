@@ -47,18 +47,16 @@ public class GameListAdapter extends BaseAdapter
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
-		if(convertView == null)
-		{
+//		if(convertView == null)
+//		{
 			convertView= inflater.inflate(R.layout.game_row, null);
 			TextView title = (TextView) convertView.findViewById(R.id.game_title);
 			title.setText("Game " +  (position+1));
 			TextView playerstext = (TextView) convertView.findViewById(R.id.game_players);
 			String playerString = "Players: ";
 			ArrayList<String> gameplayers = playernames.get(position);
-			Log.d("Obinna", "Players for game are:");
 			for (int x = 0; x< gameplayers.size(); x++)
 			{
-				Log.d("Obinna", gameplayers.get(x) + " ");
 				if (x == gameplayers.size() -1)
 				{
 					
@@ -72,8 +70,8 @@ public class GameListAdapter extends BaseAdapter
 			Log.d("Obinna", "Full list is " + playerString);
 			playerstext.setText(playerString);
 		
-		}
-		
+//		}
+//		
 		return convertView;
 	}
 

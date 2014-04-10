@@ -189,6 +189,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 			{
 				//If game is already set up, head to game activity, and send position of game instance and name of user.
 				Intent intent = new Intent(MenuActivity.this,GameActivity.class);
+				Log.d("Obinna", "Game id is " + (gameids[arg2]));
 				intent.putExtra("id", gameids[arg2]);
 				//Log.d("Obinna", "Game id is " + gameids[arg2]);
 				intent.putExtra("username", username);
