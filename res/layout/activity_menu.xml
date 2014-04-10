@@ -1,11 +1,11 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="fill_parent"
     android:focusable="false"
-    >
-<LinearLayout 
-    
+    >-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  	 xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -26,14 +26,16 @@
         android:id="@+id/game_start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
      	android:text= "@string/game_start_text"
           />
-
-    
+    	<Button 
+        android:id= "@+id/help_button"
+       	android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_button_message"
+        />    
     <TextView
         android:id="@+id/ongoing"
-        android:layout_weight="1"
         android:textSize="17sp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" 
@@ -42,19 +44,13 @@
     
     <!-- List View to show ongoing games, to be populated in app at some time -->
     <ListView
-        android:id="@+id/listview"
+        android:id="@+id/game_list"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_weight="3"
+      
         >  
+         <!--  android:layout_weight="3"-->
     </ListView>
-    <Button 
-        android:id= "@+id/help_button"
-       	android:layout_weight="1"
-       	android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/help_button_message"
-        />
 
 </LinearLayout>
-</ScrollView>
+<!-- </ScrollView> -->

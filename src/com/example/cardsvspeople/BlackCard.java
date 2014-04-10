@@ -12,9 +12,10 @@ public class BlackCard implements Card {
 	int spaces;
 	
 	
-	public BlackCard(String text)
+	public BlackCard(String text, int spaces)
 	{
 		this.text = text;
+		this.spaces = spaces;
 	}
 	@Override
 	public String getText() {

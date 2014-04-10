@@ -2,6 +2,8 @@ package com.example.cardsvspeople;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 
 public class Player 
 {
@@ -9,20 +11,34 @@ public class Player
 	ArrayList<WhiteCard> hand = new ArrayList<WhiteCard>();
 	int currentScore = 0;
 	String userName= "";
-	Boolean selected = false;
+	boolean selected = false;
 	
-	public Player(String userName, String gameName, Boolean selected)
+	public Player(String userName, String gameName, boolean selected)
 	{
 		this.userName = userName;
 		this.gameName = gameName;
 		this.selected = selected;
+	}
+	public Player(String username, String gamename, int score, ArrayList<WhiteCard> hand)
+	{
+		this.userName = username;
+		this.gameName = gamename;
+		this.currentScore = score;
+		this.hand = hand;
 	}
 	
 	public String getUserName()
 	{
 		return this.userName;
 	}
-	
+	public void setScore(int score)
+	{
+		this.currentScore = score;
+	}
+	public void createHand(ArrayList<WhiteCard> hand)
+	{
+		this.hand = hand;
+	}
 	public String getGameName()
 	{
 		return this.gameName;
@@ -42,9 +58,11 @@ public class Player
 		this.hand.add(card);
 	}
 	
-	public void RemovefromHand(WhiteCard card)
+	public void RemovefromHand(int pos)
 	{
-		this.hand.remove(card);
+		WhiteCard card = this.hand.remove(pos);
+		Log.d("Obinna", "Card " + card.getText() +" has been removed");
+		
 	}
 	public void increaseScore()
 	{
