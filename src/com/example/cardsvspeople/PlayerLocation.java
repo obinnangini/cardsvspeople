@@ -109,10 +109,14 @@ MyCustomAdapter dataAdapter = null;
 				
 				//after printing a toast showing who has been selected, it just goes to the game
 				//this will be changed by probably including a "start game" button
-				//String gameName = "Obinna";//For user view
-				String gameName = "Brandon";//To see dealer view
+				String username = "obinnangini";
+				String gamename = "Obinna";//For user view
+				//String gameName = "Brandon";//To see dealer view
 				Intent intent = new Intent(PlayerLocation.this,GameActivity.class);
-				intent.putExtra("name", gameName);
+				intent.putExtra("gamename", gamename);
+				intent.putExtra("username", username);
+				intent.putExtra("id", "ABC12d");
+				
 				startActivity(intent);
 			}
 			});

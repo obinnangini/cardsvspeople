@@ -30,12 +30,15 @@ public class LoginActivity extends Activity {
    }
 
    public void login(View view){
+	 //Need to query the server to see if login exists. If so, retrieve the player instance, and send that to MenuActivity.
       if(username.getText().toString().equals("admin") && 
-      password.getText().toString().equals("admin")){
+      password.getText().toString().equals("admin"))
+      {
       Toast.makeText(getApplicationContext(), "Hello there...", 
       Toast.LENGTH_SHORT).show();
       Intent intentLogin= new Intent(this,MenuActivity.class);
       startActivity(intentLogin);
+      
    }	
    else{
       Toast.makeText(getApplicationContext(), "Wrong Credentials",
