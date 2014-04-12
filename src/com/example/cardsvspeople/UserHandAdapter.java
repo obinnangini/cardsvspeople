@@ -1,6 +1,8 @@
 package com.example.cardsvspeople;
 
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +13,10 @@ import android.widget.TextView;
 public class UserHandAdapter extends BaseAdapter
 {
 	Context context;
-	String[] cardtext;
+	ArrayList<String> cardtext;
 	
 	private static LayoutInflater inflater = null;
-	public UserHandAdapter(Context context,String[] input)
+	public UserHandAdapter(Context context,ArrayList<String> input)
 	{
 		this.context = context;
 		this.cardtext = input;
@@ -23,17 +25,24 @@ public class UserHandAdapter extends BaseAdapter
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return cardtext.length;
+		return cardtext.size();
 	}
 	@Override
 	public Object getItem(int arg0) {
 		// TODO Auto-generated method stub
-		return cardtext[arg0];
+		return cardtext.get(arg0);
 	}
 	@Override
 	public long getItemId(int arg0) {
 		// TODO Auto-generated method stub
 		return arg0;
+	}
+	public void add(String str)
+	{
+		cardtext.add(str);
+	}
+	public void remove(int position){
+	   cardtext.remove(position);
 	}
 	@Override
 	public View getView(int arg0, View arg1, ViewGroup arg2) {
@@ -46,7 +55,7 @@ public class UserHandAdapter extends BaseAdapter
 			
 			
 			//Set text of layoiut 
-			title.setText(cardtext[arg0]);
+			title.setText(cardtext.get(arg0));
 		
 //		}
 //		
