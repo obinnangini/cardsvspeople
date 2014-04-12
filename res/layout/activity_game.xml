@@ -6,6 +6,12 @@
     android:focusable="false"
     tools:context=".GameActivity" >
 
+<TextView 
+    android:id="@+id/scoreview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:textColor="@color/white"/>
 
 <!-- Black card view starts here... -->
     
@@ -35,6 +41,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/green"
        >
     <Button
         android:id="@+id/submit_card" 
@@ -118,8 +125,8 @@
      android:paddingRight="5dp"
      style="@style/TwoWayView"
      android:background="@color/gray"
-     android:layout_width="fill_parent"
-     android:layout_height="fill_parent"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
      android:drawSelectorOnTop="false"
      android:divider="@color/gray"
      android:dividerHeight="8dp"
