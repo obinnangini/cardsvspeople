@@ -34,50 +34,22 @@ public class AsyncTasks
 	 * @author obinn_000
 	 *
 	 */
-	static class GameList extends AsyncTask<Void, Void,Map<String,ArrayList<String>>>
+	static class GameList extends AsyncTask<String, Void,Map<String,ArrayList<String>>>
 	{
 
 		@Override
-		protected Map<String,ArrayList<String>> doInBackground(Void... arg0) 
+		protected Map<String,ArrayList<String>> doInBackground(String... params) 
 		{
-			StringBuffer response = new StringBuffer();
-			URL uri;
-			try 
-			{
-				uri = new URL("https://cardsvspeople.herokuapp.com/user/btmills");
-				HttpURLConnection connection = (HttpURLConnection) uri.openConnection();
-				connection.setRequestMethod("GET");
-				BufferedReader inBufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				String inputString;
-				response = new StringBuffer();
-				while((inputString = inBufferedReader.readLine()) != null)
-				{
-					response.append(inputString);
-					
-				}
-				inBufferedReader.close();
-			} 
-			catch (MalformedURLException e1) 
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (ProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
+			String username = params[0];
+			String response = executeHTTPGET("https://cardsvspeople.herokuapp.com/user/" + username);
 			Map<String,ArrayList<String>> gameplayerslist = new HashMap<String, ArrayList<String>>();
 			
 			
 			JSONParser parser = new JSONParser();
 			//parser.parse(input);
 			try {
-				JSONObject object = (JSONObject) parser.parse(response.toString());
-				String username = (String) object.get("name");
+				JSONObject object = (JSONObject) parser.parse(response);
+				//String username = (String) object.get("name");
 				String gamename = (String) object.get("nickname");
 				//System.out.println("Players username is " + username);
 				//System.out.println("Players gamename is " + gamename);
@@ -132,40 +104,13 @@ public class AsyncTasks
 			String gamename = params[2];
 			InfoBundle bundle = null;
 			Game newGame;
-			Player player;
-			URL uri;
-			StringBuffer response = new StringBuffer();
-			try 
-			{
-				String strtemp = "https://cardsvspeople.herokuapp.com/game/" + gameid;
-				Log.d("Obinna", "URL is " + strtemp);
-				uri = new URL(strtemp);
-				HttpURLConnection connection = (HttpURLConnection) uri.openConnection();
-				connection.setRequestMethod("GET");
-				//connection.setRequestProperty(field, newValue);
-				BufferedReader inBufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				String inputString;
-				response = new StringBuffer();
-				while((inputString = inBufferedReader.readLine()) != null)
-				{
-					response.append(inputString);
-					
-				}
-				inBufferedReader.close();
-				//Log.d("Obinna", response.toString());
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			//Player player;
+			String response = executeHTTPGET("https://cardsvspeople.herokuapp.com/game/" + gameid);
 			Map<String, ArrayList<WhiteCard>> usersubmitMap = new HashMap<String, ArrayList<WhiteCard>>();
 			ArrayList<String> usernames= new ArrayList<String>();
 			ArrayList<String> gamenames = new ArrayList<String>();
 			int playerscore = -1;
-			ArrayList<WhiteCard> playerhand = new ArrayList<WhiteCard>();
+			//ArrayList<WhiteCard> playerhand = new ArrayList<WhiteCard>();
 			Map<String,Integer> playerscores = new HashMap<String, Integer>();
 			BlackCard roundBlackCard;
 			Round currRound;
@@ -176,7 +121,7 @@ public class AsyncTasks
 			
 			try 
 			{
-				object = parser.parse(response.toString());
+				object = parser.parse(response);
 				JSONObject jsonObject = (JSONObject) object;
 				String name = (String)jsonObject.get("id");
 				//System.out.println("Game name is " + name);
@@ -382,6 +327,35 @@ public class AsyncTasks
 			e.printStackTrace();
 		}
 		return cards;
+	}
+	public static String executeHTTPGET(String url)
+	{
+		URL uri;
+		StringBuffer response = new StringBuffer();
+		try 
+		{
+			uri = new URL(url);
+			HttpURLConnection connection = (HttpURLConnection) uri.openConnection();
+			connection.setRequestMethod("GET");
+			//connection.setRequestProperty(field, newValue);
+			BufferedReader inBufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String inputString;
+			response = new StringBuffer();
+			while((inputString = inBufferedReader.readLine()) != null)
+			{
+				response.append(inputString);
+				
+			}
+			inBufferedReader.close();
+			//Log.d("Obinna", response.toString());
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response.toString();
 	}
 
 	

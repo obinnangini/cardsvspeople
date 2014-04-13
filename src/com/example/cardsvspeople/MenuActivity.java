@@ -80,7 +80,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		Map<String,ArrayList<String>> gameplayerslist = new HashMap<String, ArrayList<String>>();
 		
 		AsyncTasks.GameList task = new GameList();
-		task.execute();
+		task.execute(username);
 		try {
 			gameplayerslist = task.get();
 		} catch (InterruptedException e) {
