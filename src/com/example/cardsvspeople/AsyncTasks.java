@@ -42,53 +42,55 @@ public class AsyncTasks
 		{
 			String username = params[0];
 			String response = executeHTTPGET("https://cardsvspeople.herokuapp.com/user/" + username);
-			Map<String,ArrayList<String>> gameplayerslist = new HashMap<String, ArrayList<String>>();
-			
-			
-			JSONParser parser = new JSONParser();
-			//parser.parse(input);
-			try {
-				JSONObject object = (JSONObject) parser.parse(response);
-				//String username = (String) object.get("name");
-				String gamename = (String) object.get("nickname");
-				//System.out.println("Players username is " + username);
-				//System.out.println("Players gamename is " + gamename);
-				JSONArray gamelist = (JSONArray) object.get("games");
-				//System.out.println("Games they are currently in are:");
-				for (int x = 0; x < gamelist.size(); x++)
-				{
-					JSONObject object2 = (JSONObject) gamelist.get(x);
-					String gameid = (String) object2.get("id");
-					//System.out.println("Game id:" + gameid);
-					JSONArray playerlist = (JSONArray) object2.get("players");
-					ArrayList<String> playernames = new ArrayList<String>();
-					//System.out.print("Players in game are: ");
-					for (int y=0; y< playerlist.size(); y++)
+			Map<String,ArrayList<String>> gameplayerslist = null;
+			if (response != null)
+			{
+				gameplayerslist = new HashMap<String, ArrayList<String>>();
+				JSONParser parser = new JSONParser();
+				//parser.parse(input);
+				try {
+					JSONObject object = (JSONObject) parser.parse(response);
+					//String username = (String) object.get("name");
+					String gamename = (String) object.get("nickname");
+					//System.out.println("Players username is " + username);
+					//System.out.println("Players gamename is " + gamename);
+					JSONArray gamelist = (JSONArray) object.get("games");
+					//System.out.println("Games they are currently in are:");
+					for (int x = 0; x < gamelist.size(); x++)
 					{
-						//JSONObject tempobj = (JSONObject) playerlist.get(y);
-						String name = (String) playerlist.get(y);
-						playernames.add(name);
-//						if (y == playerlist.size()-1)
-//						{
-//							System.out.print(name +". ");
-//						}
-//						else 
-//						{
-//							System.out.print(name +", ");
-//						}
+						JSONObject object2 = (JSONObject) gamelist.get(x);
+						String gameid = (String) object2.get("id");
+						//System.out.println("Game id:" + gameid);
+						JSONArray playerlist = (JSONArray) object2.get("players");
+						ArrayList<String> playernames = new ArrayList<String>();
+						//System.out.print("Players in game are: ");
+						for (int y=0; y< playerlist.size(); y++)
+						{
+							//JSONObject tempobj = (JSONObject) playerlist.get(y);
+							String name = (String) playerlist.get(y);
+							playernames.add(name);
+	//						if (y == playerlist.size()-1)
+	//						{
+	//							System.out.print(name +". ");
+	//						}
+	//						else 
+	//						{
+	//							System.out.print(name +", ");
+	//						}
+						}
+						//System.out.println();
+						gameplayerslist.put(gameid, playernames);
+						
 					}
-					//System.out.println();
-					gameplayerslist.put(gameid, playernames);
-					
+				
+				} 
+				catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			
-			} 
-			catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-			return gameplayerslist;
-		}
+				return gameplayerslist;
+			}
 		
 	}
 	
@@ -106,108 +108,111 @@ public class AsyncTasks
 			Game newGame;
 			//Player player;
 			String response = executeHTTPGET("https://cardsvspeople.herokuapp.com/game/" + gameid);
-			Map<String, ArrayList<WhiteCard>> usersubmitMap = new HashMap<String, ArrayList<WhiteCard>>();
-			ArrayList<String> usernames= new ArrayList<String>();
-			ArrayList<String> gamenames = new ArrayList<String>();
-			int playerscore = -1;
-			//ArrayList<WhiteCard> playerhand = new ArrayList<WhiteCard>();
-			Map<String,Integer> playerscores = new HashMap<String, Integer>();
-			BlackCard roundBlackCard;
-			Round currRound;
-			String dealer;
-			Player tempPlayer = null;
-			JSONParser parser = new JSONParser();
-			Object object;
-			
-			try 
+			if(response != null)
 			{
-				object = parser.parse(response);
-				JSONObject jsonObject = (JSONObject) object;
-				String name = (String)jsonObject.get("id");
-				//System.out.println("Game name is " + name);
-				int tempscore = -1;
-				JSONArray playersArray = (JSONArray) jsonObject.get("players");
-				for (int x=0; x< playersArray.size(); x++)
-				{
-					JSONObject tempobj = (JSONObject) playersArray.get(x);
-					String tempusernname = (String) tempobj.get("name");
-					//System.out.println("Player username is " + tempusernname);
-					String tempgamename = (String) tempobj.get("nickname");
-					tempscore = (int)((Long) tempobj.get("score")).longValue();
-					Log.d("Obinna", "USername is " + tempusernname);
-					Log.d("Obinna", "Gamename is " + tempgamename);
-					if(tempgamename.equals(gamename) && tempusernname.equals(username))
-					{
-						Log.d("Obinna", "Current player found");
-						//System.out.println("Player gamename is " + tempgamename);
-						playerscore = tempscore;
-						//System.out.println("Player score is  " + Integer.toString(tempscore));
-						ArrayList<WhiteCard> tempHand= new ArrayList<WhiteCard>();
-						JSONArray handArray = (JSONArray) tempobj.get("hand");
-						//System.out.println("Player cards are:");
-						//System.out.println("Player hand size is:" + handArray.size());
-						for(int y =0; y < handArray.size(); y++)
-						{
-							JSONObject temp2 = (JSONObject) handArray.get(y);
-							int cardid = (int)((Long) temp2.get("id")).longValue();
-							String cardtext = (String) temp2.get("text");
-							//System.out.println(cardtext);
-							tempHand.add(new WhiteCard(cardid, cardtext));
-						}
-						tempPlayer = new Player(username, gamename, playerscore, tempHand);
-					}
-					usernames.add(tempusernname);
-					gamenames.add(tempgamename);
-					playerscores.put(tempusernname,tempscore);
-				}
-				JSONObject object2 = (JSONObject)jsonObject.get("round");
-				String dealername = (String) object2.get("judge");
-				dealer = dealername;
-				//System.out.println("Current round dealer is " + dealername);
-				JSONObject blCard = (JSONObject) object2.get("question");
-				String blackcardtext = (String) blCard.get("text");
-				int blackccardspaces= (int)((Long) blCard.get("numAnswers")).longValue();
-				roundBlackCard = new BlackCard(blackcardtext, blackccardspaces);
-				//System.out.println("Black card text is " + blackcardtext);
-				//System.out.println("Number of spaces needed is/are: " + Integer.toString(blackccardspaces));
-				//System.out.println("Submissions so far are :");
-				JSONObject answerobj = (JSONObject) object2.get("answers");
-				for (int z = 0; z < usernames.size(); z++)
-				{
-					String username1 = usernames.get(z);
-					JSONArray playersubmitlist = (JSONArray) answerobj.get(username1);
-					if (playersubmitlist != null)
-					{
-						//System.out.println(username + " has submitted the following cards:");
-						ArrayList<WhiteCard> usersubmissons = new ArrayList<WhiteCard>();
-						for (int a = 0; a< playersubmitlist.size(); a++)
-						{
-							JSONObject submitObj = (JSONObject) playersubmitlist.get(a);
-							int cardid = Integer.parseInt((String)submitObj.get("id"));
-							String cardtext = (String) submitObj.get("text");
-							//System.out.println(cardtext);
-							WhiteCard tempCard = new WhiteCard(cardid,cardtext);
-							usersubmissons.add(tempCard);
-						}
-						usersubmitMap.put(username1, usersubmissons);
-					}
-					else 
-					{
-						//System.out.println(username + " has not submitted cards");
-					}
-				}
-				currRound = new Round(usersubmitMap, roundBlackCard);
-				newGame = new Game(usernames, gamenames, currRound, playerscores, dealer);
-				bundle = new InfoBundle(newGame, tempPlayer);
+				Map<String, ArrayList<WhiteCard>> usersubmitMap = new HashMap<String, ArrayList<WhiteCard>>();
+				ArrayList<String> usernames= new ArrayList<String>();
+				ArrayList<String> gamenames = new ArrayList<String>();
+				int playerscore = -1;
+				//ArrayList<WhiteCard> playerhand = new ArrayList<WhiteCard>();
+				Map<String,Integer> playerscores = new HashMap<String, Integer>();
+				BlackCard roundBlackCard;
+				Round currRound;
+				String dealer;
+				Player tempPlayer = null;
+				JSONParser parser = new JSONParser();
+				Object object;
 				
+				try 
+				{
+					object = parser.parse(response);
+					JSONObject jsonObject = (JSONObject) object;
+					String name = (String)jsonObject.get("id");
+					//System.out.println("Game name is " + name);
+					int tempscore = -1;
+					JSONArray playersArray = (JSONArray) jsonObject.get("players");
+					for (int x=0; x< playersArray.size(); x++)
+					{
+						JSONObject tempobj = (JSONObject) playersArray.get(x);
+						String tempusernname = (String) tempobj.get("name");
+						//System.out.println("Player username is " + tempusernname);
+						String tempgamename = (String) tempobj.get("nickname");
+						tempscore = (int)((Long) tempobj.get("score")).longValue();
+						Log.d("Obinna", "USername is " + tempusernname);
+						Log.d("Obinna", "Gamename is " + tempgamename);
+						if(tempgamename.equals(gamename) && tempusernname.equals(username))
+						{
+							Log.d("Obinna", "Current player found");
+							//System.out.println("Player gamename is " + tempgamename);
+							playerscore = tempscore;
+							//System.out.println("Player score is  " + Integer.toString(tempscore));
+							ArrayList<WhiteCard> tempHand= new ArrayList<WhiteCard>();
+							JSONArray handArray = (JSONArray) tempobj.get("hand");
+							//System.out.println("Player cards are:");
+							//System.out.println("Player hand size is:" + handArray.size());
+							for(int y =0; y < handArray.size(); y++)
+							{
+								JSONObject temp2 = (JSONObject) handArray.get(y);
+								int cardid = (int)((Long) temp2.get("id")).longValue();
+								String cardtext = (String) temp2.get("text");
+								//System.out.println(cardtext);
+								tempHand.add(new WhiteCard(cardid, cardtext));
+							}
+							tempPlayer = new Player(username, gamename, playerscore, tempHand);
+						}
+						usernames.add(tempusernname);
+						gamenames.add(tempgamename);
+						playerscores.put(tempusernname,tempscore);
+					}
+					JSONObject object2 = (JSONObject)jsonObject.get("round");
+					String dealername = (String) object2.get("judge");
+					dealer = dealername;
+					//System.out.println("Current round dealer is " + dealername);
+					JSONObject blCard = (JSONObject) object2.get("question");
+					String blackcardtext = (String) blCard.get("text");
+					int blackccardspaces= (int)((Long) blCard.get("numAnswers")).longValue();
+					roundBlackCard = new BlackCard(blackcardtext, blackccardspaces);
+					//System.out.println("Black card text is " + blackcardtext);
+					//System.out.println("Number of spaces needed is/are: " + Integer.toString(blackccardspaces));
+					//System.out.println("Submissions so far are :");
+					JSONObject answerobj = (JSONObject) object2.get("answers");
+					for (int z = 0; z < usernames.size(); z++)
+					{
+						String username1 = usernames.get(z);
+						JSONArray playersubmitlist = (JSONArray) answerobj.get(username1);
+						if (playersubmitlist != null)
+						{
+							//System.out.println(username + " has submitted the following cards:");
+							ArrayList<WhiteCard> usersubmissons = new ArrayList<WhiteCard>();
+							for (int a = 0; a< playersubmitlist.size(); a++)
+							{
+								JSONObject submitObj = (JSONObject) playersubmitlist.get(a);
+								int cardid = Integer.parseInt((String)submitObj.get("id"));
+								String cardtext = (String) submitObj.get("text");
+								//System.out.println(cardtext);
+								WhiteCard tempCard = new WhiteCard(cardid,cardtext);
+								usersubmissons.add(tempCard);
+							}
+							usersubmitMap.put(username1, usersubmissons);
+						}
+						else 
+						{
+							//System.out.println(username + " has not submitted cards");
+						}
+					}
+					currRound = new Round(usersubmitMap, roundBlackCard);
+					newGame = new Game(usernames, gamenames, currRound, playerscores, dealer);
+					bundle = new InfoBundle(newGame, tempPlayer);
 					
-			} 
-			catch (ParseException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+						
+				} 
+				catch (ParseException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//Log.d("Obinna", "AysncTask done");
 			}
-			//Log.d("Obinna", "AysncTask done");
 			return bundle;
 		}
 		
@@ -331,6 +336,7 @@ public class AsyncTasks
 	public static String executeHTTPGET(String url)
 	{
 		URL uri;
+		int responseCode=0;
 		StringBuffer response = new StringBuffer();
 		try 
 		{
@@ -338,6 +344,7 @@ public class AsyncTasks
 			HttpURLConnection connection = (HttpURLConnection) uri.openConnection();
 			connection.setRequestMethod("GET");
 			//connection.setRequestProperty(field, newValue);
+			responseCode = connection.getResponseCode();
 			BufferedReader inBufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputString;
 			response = new StringBuffer();
@@ -355,7 +362,14 @@ public class AsyncTasks
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return response.toString();
+		if(responseCode == 200)
+		{
+			return response.toString();
+		}
+		else 
+		{
+			return null;
+		}
 	}
 
 	

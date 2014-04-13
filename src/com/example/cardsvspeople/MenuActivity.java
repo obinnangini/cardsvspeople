@@ -90,39 +90,49 @@ public class MenuActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		for (String key: gameplayerslist.keySet())
-//		{
-//			for (String str: gameplayerslist.get(key))
-//				{
-//					Log.d("Obinna",str + " ");
-//				}
-//			//System.out.println();
-//		}
-		final String [] gameids= gameplayerslist.keySet().toArray(new String[gameplayerslist.keySet().size()]);
-		ArrayList<ArrayList<String>> gameplayers = new ArrayList<ArrayList<String>>();
-		for (String str : gameplayerslist.keySet())
+		if (gameplayerslist == null)
 		{
-			gameplayers.add(gameplayerslist.get(str));
+			setContentView(R.layout.error_page);
+			TextView error = (TextView) findViewById(R.id.error_msg);
+			error.setText("Error: Player not found. Please login again");
 		}
-		Log.d("Obinna","Game player size" + Integer.toString(gameplayerslist.size()));
-		listView.setAdapter(new GameListAdapter(getApplicationContext(), gameids, gameplayers));
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) 
+		else 
+		{
+		
+	//		for (String key: gameplayerslist.keySet())
+	//		{
+	//			for (String str: gameplayerslist.get(key))
+	//				{
+	//					Log.d("Obinna",str + " ");
+	//				}
+	//			//System.out.println();
+	//		}
+			final String [] gameids= gameplayerslist.keySet().toArray(new String[gameplayerslist.keySet().size()]);
+			ArrayList<ArrayList<String>> gameplayers = new ArrayList<ArrayList<String>>();
+			for (String str : gameplayerslist.keySet())
 			{
-				//If game is already set up, head to game activity, and send position of game instance and name of user.
-				Intent intent = new Intent(MenuActivity.this,GameActivity.class);
-				Log.d("Obinna", "Game id is " + (gameids[arg2]));
-				intent.putExtra("id", gameids[arg2]);
-				//Log.d("Obinna", "Game id is " + gameids[arg2]);
-				intent.putExtra("username", username);
-				intent.putExtra("gamename", gamename);
-				startActivity(intent);
-				
+				gameplayers.add(gameplayerslist.get(str));
 			}
-		});
+			Log.d("Obinna","Game player size" + Integer.toString(gameplayerslist.size()));
+			listView.setAdapter(new GameListAdapter(getApplicationContext(), gameids, gameplayers));
+			listView.setOnItemClickListener(new OnItemClickListener() {
+	
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+						long arg3) 
+				{
+					//If game is already set up, head to game activity, and send position of game instance and name of user.
+					Intent intent = new Intent(MenuActivity.this,GameActivity.class);
+					Log.d("Obinna", "Game id is " + (gameids[arg2]));
+					intent.putExtra("id", gameids[arg2]);
+					//Log.d("Obinna", "Game id is " + gameids[arg2]);
+					intent.putExtra("username", username);
+					intent.putExtra("gamename", gamename);
+					startActivity(intent);
+					
+				}
+			});
+		}
 	}
 
 	@Override
