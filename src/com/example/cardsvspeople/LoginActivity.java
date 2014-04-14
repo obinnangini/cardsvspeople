@@ -9,10 +9,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.example.cardsvspeople.AsyncTasks.*;
 
 
 import android.app.Activity;
@@ -71,12 +74,26 @@ public class LoginActivity extends Activity {
 	   
    	Log.d("usernmae = ",  userName);
    	
-   if (checkUserValid(userName))
+   	AsyncTasks.LoginUser task = new LoginUser();
+   	task.execute(userName);
+   	String response ="";
+   	try {
+   		response = task.get();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (ExecutionException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+   	
+   if (response != null)
    {
 	   Intent intentLogInSuccess= new Intent(this,MenuActivity.class);
+	   nickName =  JSONParseUser(response);
 	   intentLogInSuccess.putExtra("gamename", nickName);
 	   intentLogInSuccess.putExtra("username", userName);
-	   
+
        startActivity(intentLogInSuccess);
    }
    else
@@ -139,19 +156,12 @@ public class LoginActivity extends Activity {
            e.printStackTrace();
        }
        
-       if (response1.toString().equals(""))
-       {
-    	   return false;
-       }
-       else
-       {
-    	   return JSONParseUser(response1.toString());
-       }
+return false;
        
    }
    
    
-   public static boolean JSONParseUser(String input) 
+   public static String JSONParseUser(String input) 
    { 
        Map<String,ArrayList<String>> gameplayerslist = new HashMap<String, ArrayList<String>>();
        String username = "";
@@ -162,8 +172,8 @@ public class LoginActivity extends Activity {
            JSONObject object = (JSONObject) parser.parse(input);
            username = (String) object.get("name");
            gamename = (String) object.get("nickname");
-           System.out.println("Players username is " + username);
-           System.out.println("Players gamename is " + gamename);
+          // System.out.println("Players username is " + username);
+          // System.out.println("Players gamename is " + gamename);
            nickName = gamename;
            JSONArray gamelist = (JSONArray) object.get("games");
            System.out.println("Games they are currently in are:");
@@ -198,14 +208,7 @@ public class LoginActivity extends Activity {
            e.printStackTrace();
        }
        
-       if (username.length() > 0)
-       {
-    	   return true;
-       }
-       else
-       {
-    	   return false;
-       }
+      return gamename;
 
    }
 

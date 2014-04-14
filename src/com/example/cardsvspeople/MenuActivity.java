@@ -56,10 +56,10 @@ public class MenuActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Intent intent = getIntent();
-		//username = intent.getStringExtra("username");
-		//gamename = = intent.getStringExtra("gamename");
-		username = "obinnangini";//To see user view
-		gamename = "Obinna";
+		username = intent.getStringExtra("username");
+		gamename = intent.getStringExtra("gamename");
+		//username = "obinnangini";//To see user view
+		//gamename = "Obinna";
 		//username = "btmills";//To see dealer view
 		//gamename = "Brandon";
 		super.onCreate(savedInstanceState);

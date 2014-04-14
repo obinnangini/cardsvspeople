@@ -307,6 +307,49 @@ public class AsyncTasks
 		}
 	}
 		
+	static class RegisterUser extends AsyncTask<String, Void, Void>
+	{
+
+		@Override
+		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			String username = params[0];
+			String nickname = params[1];
+			String password = params[2];
+			
+			 String urlParameters = "";
+	           try {
+	                  urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
+	                  "&password=" + URLEncoder.encode(nickname, "UTF-8") +
+	                  "&nickname=" + URLEncoder.encode(password, "UTF-8");
+	              } catch (UnsupportedEncodingException e) {
+	                  // TODO Auto-generated catch block
+	                  e.printStackTrace();
+	              }
+	           executeHTTP("POST","http://cardsvspeople.herokuapp.com/user", urlParameters);
+	           
+			return null;
+		}
+		
+	}
+	
+	static class LoginUser extends AsyncTask<String, Void, String>
+	{
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			String username = params[0];
+			
+		
+			String result = executeHTTPGET("http://cardsvspeople.herokuapp.com/user/"+username);
+			
+			
+	           
+			return result;
+		}
+		
+	}
 
 	public static ArrayList<WhiteCard> getnewCards(String input)
 	{

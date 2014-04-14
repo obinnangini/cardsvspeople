@@ -14,6 +14,8 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.example.cardsvspeople.AsyncTasks.*;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -57,16 +59,8 @@ public class RegisterActivity extends Activity {
     	String nickName = nickNameArea.getText().toString();
     	String passWord = passWordArea.getText().toString();
     	
-    	   String urlParameters = "";
-           try {
-                  urlParameters = "name=" + URLEncoder.encode(userName, "UTF-8") +
-                  "&password=" + URLEncoder.encode(passWord, "UTF-8") +
-                  "&nickname=" + URLEncoder.encode(nickName, "UTF-8");
-              } catch (UnsupportedEncodingException e) {
-                  // TODO Auto-generated catch block
-                  e.printStackTrace();
-              }
-           String temp = executePost("http://cardsvspeople.herokuapp.com/user", urlParameters);
+    	 AsyncTasks.RegisterUser task = new RegisterUser();
+    	 task.execute(userName,nickName,passWord);
            
            Intent intentRegisterSuccess= new Intent(this,MenuActivity.class);
            intentRegisterSuccess.putExtra("gamename", nickName);
