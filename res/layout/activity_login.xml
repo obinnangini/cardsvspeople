@@ -59,6 +59,13 @@
       android:ems="10"
       android:inputType="textPassword" />
 
+   <TextView
+       android:id="@+id/textView5"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignRight="@+id/textView1"
+       android:layout_centerVertical="true" 
+       android:text=""/>
 
     <Button
         android:id="@+id/buttonCheat"
