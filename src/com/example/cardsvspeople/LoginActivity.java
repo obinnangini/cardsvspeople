@@ -1,9 +1,29 @@
 package com.example.cardsvspeople;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -13,44 +33,66 @@ import android.widget.Toast;
 
 public class LoginActivity extends Activity {
 
-   private EditText  username=null;
-   private EditText  password=null;
    private TextView attempts;
    private Button login;
    int counter = 3;
+   private EditText userNameArea,passWordArea;
+   private String userName ;
+   private String passWord ; 
+   private static String nickName ;
+   
+   
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_login);
-      username = (EditText)findViewById(R.id.editText1);
-      password = (EditText)findViewById(R.id.editText2);
+      userNameArea = (EditText)findViewById(R.id.editText1);
+      passWordArea = (EditText)findViewById(R.id.editText2);
       attempts = (TextView)findViewById(R.id.textView5);
       attempts.setText(Integer.toString(counter));
       login = (Button)findViewById(R.id.buttonLogin);
-   }
-
-   public void login(View view){
-	 //Need to query the server to see if login exists. If so, retrieve the player instance, and send that to MenuActivity.
-      if(username.getText().toString().equals("admin") && 
-      password.getText().toString().equals("admin"))
-      {
-      Toast.makeText(getApplicationContext(), "Hello there...", 
-      Toast.LENGTH_SHORT).show();
-      Intent intentLogin= new Intent(this,MenuActivity.class);
-      startActivity(intentLogin);
       
-   }	
-   else{
-      Toast.makeText(getApplicationContext(), "Wrong Credentials",
-      Toast.LENGTH_SHORT).show();
-      attempts.setBackgroundColor(Color.RED);	
-      counter--;
-      attempts.setText(Integer.toString(counter));
-      if(counter==0){
-         login.setEnabled(false);
-      }
-
+      login.setOnClickListener(new View.OnClickListener() {
+    	  
+          public void onClick(View arg0) {
+                              // Closing registration screen
+              // Switching to Login Screen/closing register screen
+        	  login();
+          }
+      });
+     
    }
+
+   public void login(){
+	 //Need to query the server to see if login exists. If so, retrieve the player instance, and send that to MenuActivity.
+
+	 userNameArea = (EditText)findViewById(R.id.editText1);
+   	String userName = userNameArea.getText().toString();
+	   
+   	Log.d("usernmae = ",  userName);
+   	
+   if (checkUserValid(userName))
+   {
+	   Intent intentLogInSuccess= new Intent(this,MenuActivity.class);
+	   intentLogInSuccess.putExtra("gamename", nickName);
+	   intentLogInSuccess.putExtra("username", userName);
+	   
+       startActivity(intentLogInSuccess);
+   }
+   else
+   {
+	   new AlertDialog.Builder(LoginActivity.this)
+				.setTitle("Warning").setMessage("No such a user exist, please register first")
+				.setNegativeButton("ok",new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,int which) {
+								// TODO Auto-generated method stub
+							}
+						}).show();
+		Log.d("notfind = ",  "true");
+   }
+   	
+
 
 }
    
@@ -64,6 +106,109 @@ public class LoginActivity extends Activity {
 	   	  Intent intentLogin= new Intent(this,MenuActivity.class);
 	      startActivity(intentLogin);
 	}
+   
+   
+   public boolean checkUserValid(String username)
+   {
+	   URL uri = null;
+	   StringBuffer response1 = new StringBuffer("");
+	   
+       try 
+       {
+    	   uri = new URL("https://cardsvspeople.herokuapp.com/user/"+username);
+           HttpURLConnection connection = (HttpURLConnection) uri.openConnection();  
+          
+           connection = (HttpURLConnection) uri.openConnection();
+           connection.setRequestMethod("GET");
+           BufferedReader inBufferedReader1 = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+           String inputString1;
+            response1 = new StringBuffer("");
+           while((inputString1 = inBufferedReader1.readLine()) != null)
+           {
+               response1.append(inputString1);
+           }
+           inBufferedReader1.close();
+
+           
+           //System.out.println(response.toString());
+       } catch (MalformedURLException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       } catch (IOException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       }
+       
+       if (response1.toString().equals(""))
+       {
+    	   return false;
+       }
+       else
+       {
+    	   return JSONParseUser(response1.toString());
+       }
+       
+   }
+   
+   
+   public static boolean JSONParseUser(String input) 
+   { 
+       Map<String,ArrayList<String>> gameplayerslist = new HashMap<String, ArrayList<String>>();
+       String username = "";
+       String gamename = "";
+       JSONParser parser = new JSONParser();
+       //parser.parse(input);
+       try {
+           JSONObject object = (JSONObject) parser.parse(input);
+           username = (String) object.get("name");
+           gamename = (String) object.get("nickname");
+           System.out.println("Players username is " + username);
+           System.out.println("Players gamename is " + gamename);
+           nickName = gamename;
+           JSONArray gamelist = (JSONArray) object.get("games");
+           System.out.println("Games they are currently in are:");
+           for (int x = 0; x < gamelist.size(); x++)
+           {
+               JSONObject object2 = (JSONObject) gamelist.get(x);
+               String gameid = (String) object2.get("id");
+               System.out.println("Game id:" + gameid);
+               JSONArray playerlist = (JSONArray) object2.get("players");
+               ArrayList<String> playernames = new ArrayList<String>();
+               System.out.print("Players in game are: ");
+               for (int y=0; y< playerlist.size(); y++)
+               {
+                   //JSONObject tempobj = (JSONObject) playerlist.get(y);
+                   String name = (String) playerlist.get(y);
+                   playernames.add(name);
+                   if (y == playerlist.size()-1)
+                   {
+                       System.out.print(name +". ");
+                   }
+                   else 
+                   {
+                       System.out.print(name +", ");
+                   }
+               }
+               System.out.println();
+               gameplayerslist.put(gameid, playernames);
+
+           }
+       } catch (ParseException e) {
+           // TODO Auto-generated catch block
+           e.printStackTrace();
+       }
+       
+       if (username.length() > 0)
+       {
+    	   return true;
+       }
+       else
+       {
+    	   return false;
+       }
+
+   }
+
    
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
