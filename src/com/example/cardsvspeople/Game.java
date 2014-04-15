@@ -14,13 +14,15 @@ public class Game
 	Map<String, Integer> playerscores = new HashMap<String, Integer>();
 	int roundcounter = 0;
 	String dealer = null;
-	public Game(ArrayList<String> usernames, ArrayList<String> gamenames, Round round, Map<String, Integer> scores, String dealerusername)
+	String winner = null;
+	public Game(ArrayList<String> usernames, ArrayList<String> gamenames, Round round, Map<String, Integer> scores, String dealerusername, String winnername)
 	{
 		this.playerusernames = usernames;
 		this.playergamenames = gamenames;
 		current = round;
 		this.playerscores = scores;
 		this.dealer = dealerusername;
+		this.winner = winnername;
 	}
 	
 //	public boolean CreateGame()
@@ -101,6 +103,11 @@ public class Game
 	public String getDealer()
 	{
 		return this.dealer;
+	}
+	
+	public String getWinner()
+	{
+		return this.winner;
 	}
 	
 	public ArrayList<String> getPlayers()
