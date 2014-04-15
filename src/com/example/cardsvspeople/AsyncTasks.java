@@ -94,7 +94,7 @@ public class AsyncTasks
 		
 	}
 	
-	static class CreatGame extends AsyncTask<ArrayList<String>, Void, String>
+	static class CreateGame extends AsyncTask<ArrayList<String>, Void, String>
 	{
 
 		@Override
@@ -121,8 +121,26 @@ public class AsyncTasks
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			String result = executeHTTP("POST", "http://cardsvspeople.herokuapp.com/game", urlParameters);
-			return result;
+			Log.d("URLParameters",urlParameters);
+			String result = "";
+			result = executeHTTP("POST", "https://cardsvspeople.herokuapp.com/game", urlParameters);
+			Log.d("Result",result);
+			Log.d("URLParameters",urlParameters);
+			JSONParser parser = new JSONParser();
+			Object object;
+			
+			//Log.d("Santosh",result);
+			
+			String gameid = null;
+			try {
+				object = parser.parse(result);
+				JSONObject jsonObject = (JSONObject) object;
+				gameid = (String)jsonObject.get("id");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return gameid;
 		}
 		
 	}
@@ -460,6 +478,7 @@ public class AsyncTasks
 	
 	public static String executeHTTP(String reqMethod, String targetURL, String urlParameters)
 	  {
+		Log.d("URLParameters",urlParameters+" in executeHTTP");
 	    URL url;
 	    HttpURLConnection connection = null;  
 	    try {

@@ -12,6 +12,8 @@ public class Player
 	int currentScore = 0;
 	String userName= "";
 	boolean selected = false;
+	double latitude = 0;
+	double longitude = 0;
 	
 	public Player(String userName, String gameName, boolean selected)
 	{
@@ -74,5 +76,16 @@ public class Player
 	public void setSelected(Boolean selected){
 		this.selected = selected;
 	}
-	
+	public void setLatitude(double latitude){
+		this.latitude = latitude;
+	}
+	public double getLatitude() {
+		return this.latitude;
+	}
+	public void setLongitude(double longitude){
+		this.longitude = longitude;
+	}
+	public double getLongitude(){
+		return this.longitude;
+	}
 }
