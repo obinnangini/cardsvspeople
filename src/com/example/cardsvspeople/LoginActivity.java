@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
    private String passWord ; 
    private static String nickName ;
    Button btnShowLocation;
-   GPSTracker gps;
+   //GPSTracker gps;
    
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +151,7 @@ public class LoginActivity extends Activity {
 	}
    
    public void cheat(View view){
-	   	  Intent intentLogin= new Intent(this,MenuActivity.class);
+	   	  Intent intentLogin= new Intent(this,PlayerLocation.class);
 	      startActivity(intentLogin);
 	}
    
