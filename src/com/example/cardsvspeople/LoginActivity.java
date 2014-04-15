@@ -151,7 +151,7 @@ public class LoginActivity extends Activity {
 	}
    
    public void cheat(View view){
-	   	  Intent intentLogin= new Intent(this,MenuActivity.class);
+	   	  Intent intentLogin= new Intent(this,PlayerLocation.class);
 	      startActivity(intentLogin);
 	}
    
