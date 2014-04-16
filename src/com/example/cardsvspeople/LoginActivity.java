@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
    private String passWord ; 
    private static String nickName ;
    Button btnShowLocation;
-   //GPSTracker gps;
+   GPSTracker gps;
    
    @Override
    protected void onCreate(Bundle savedInstanceState) {

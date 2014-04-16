@@ -94,6 +94,32 @@ public class AsyncTasks
 		
 	}
 	
+	static class submitLocation extends AsyncTask<String, Void, Void>
+	{
+
+		@Override
+		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			String username = params[0];
+			double latitude = Double.parseDouble(params[1]);
+			double longitude = Double.parseDouble(params[2]);
+			 String urlParameters = null;
+				try {
+					urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
+					"&long=" + URLEncoder.encode(params[2], "UTF-8") + 
+					"&lat=" + URLEncoder.encode(params[1],"UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			executeHTTP("POST", "https://cardsvspeople.herokuapp.com/???", urlParameters);
+			return null;
+			
+		}
+		
+	}
+	
+	
 	static class CreateGame extends AsyncTask<ArrayList<String>, Void, String>
 	{
 
