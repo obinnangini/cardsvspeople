@@ -1,4 +1,4 @@
-package com.example.cardsvspeople;
+package edu.osu.cardsvspeople;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -19,8 +18,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import com.example.cardsvspeople.R.id;
 
 import android.os.AsyncTask;
 import android.util.Log;

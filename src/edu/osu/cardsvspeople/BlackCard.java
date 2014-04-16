@@ -1,6 +1,4 @@
-package com.example.cardsvspeople;
-
-import android.content.res.Resources.Theme;
+package edu.osu.cardsvspeople;
 
 public class BlackCard implements Card {
 	

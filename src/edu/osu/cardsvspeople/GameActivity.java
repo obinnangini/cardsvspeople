@@ -1,69 +1,25 @@
-package com.example.cardsvspeople;
+package edu.osu.cardsvspeople;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ResponseCache;
-import java.net.URL;
 import java.util.ArrayList;
 
-
-
-
-
-
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import javax.security.auth.PrivateCredentialPermission;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.lucasr.twowayview.TwoWayView;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-import com.example.cardsvspeople.AsyncTasks.*;
-import com.example.cardsvspeople.R.id;
-
-import android.os.AsyncTask;
+import edu.osu.cardsvspeople.AsyncTasks.*;
 import android.os.Bundle;
-import android.os.Handler;
-import android.R.string;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
