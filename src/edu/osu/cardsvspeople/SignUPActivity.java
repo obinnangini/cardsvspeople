@@ -1,4 +1,4 @@
-package com.example.cardsvspeople;
+package edu.osu.cardsvspeople;
 
 import android.app.Activity;
 import android.os.Bundle;

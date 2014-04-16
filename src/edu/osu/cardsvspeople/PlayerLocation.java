@@ -1,4 +1,4 @@
-package com.example.cardsvspeople;
+package edu.osu.cardsvspeople;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,7 +39,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.cardsvspeople.AsyncTasks.CreateGame;
+import edu.osu.cardsvspeople.AsyncTasks.CreateGame;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -263,7 +263,7 @@ String gamename;
         }
 
 		@Override
-			protected void onPostExecute(JSONArray jsonarray){
+		protected void onPostExecute(JSONArray jsonarray){
 	//		pDialog.dismiss();
 			try {
 				for(int i = 0; i < jsonarray.length(); i++) {
