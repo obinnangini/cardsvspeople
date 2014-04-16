@@ -1,7 +1,5 @@
 package com.example.cardsvspeople;
 
-import android.content.res.Resources.Theme;
-
 public class BlackCard implements Card {
 	
 	String text;

@@ -3,7 +3,6 @@ package com.example.cardsvspeople;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Point;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
