@@ -1,4 +1,4 @@
-package com.example.cardsvspeople;
+package edu.osu.cardsvspeople;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.cardsvspeople.AsyncTasks.LoginUser;
+import edu.osu.cardsvspeople.AsyncTasks.LoginUser;
 
 
 public class LoginActivity extends Activity {

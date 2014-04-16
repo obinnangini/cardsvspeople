@@ -1,10 +1,10 @@
-package com.example.cardsvspeople;
+package edu.osu.cardsvspeople;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import com.example.cardsvspeople.AsyncTasks.*;
+import edu.osu.cardsvspeople.AsyncTasks.*;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;

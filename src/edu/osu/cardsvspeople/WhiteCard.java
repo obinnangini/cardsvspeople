@@ -1,4 +1,4 @@
-package com.example.cardsvspeople;
+package edu.osu.cardsvspeople;
 
 public class WhiteCard  implements Card{
 

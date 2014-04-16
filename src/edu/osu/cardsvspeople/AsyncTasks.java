@@ -1,4 +1,4 @@
-package com.example.cardsvspeople;
+package edu.osu.cardsvspeople;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

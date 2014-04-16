@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cardsvspeople"
+    package="edu.osu.cardsvspeople"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -24,17 +24,17 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.cardsvspeople.MainActivity"
+            android:name="edu.osu.cardsvspeople.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <!-- android:theme="@style/Theme.AppCompat.Light"-->
         <activity
-            android:name="com.example.cardsvspeople.MenuActivity"
+            android:name="edu.osu.cardsvspeople.MenuActivity"
             android:label="@string/app_name" >
         </activity>
         
          <activity
-            android:name="com.example.cardsvspeople.LoginActivity"
+            android:name="edu.osu.cardsvspeople.LoginActivity"
             android:label="@string/app_name" >
              <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,13 +46,13 @@
                   android:label="Register New Account"></activity>
            
         <activity
-            android:name="com.example.cardsvspeople.PlayerLocation"
+            android:name="edu.osu.cardsvspeople.PlayerLocation"
             android:label="@string/player_location" >
            
         </activity>
         
         <activity
-            android:name="com.example.cardsvspeople.GameActivity"
+            android:name="edu.osu.cardsvspeople.GameActivity"
             android:label="@string/title_activity_game"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
