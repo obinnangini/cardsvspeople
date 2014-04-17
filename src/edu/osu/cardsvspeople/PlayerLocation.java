@@ -19,8 +19,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -141,79 +144,20 @@ String gamename;
 	
 	private void displayListView()
 	{
-		/*
-		ArrayList<Player> playerList = new ArrayList<Player>();
-		playerList.add(new Player("user1", "Brandon", false));
-		playerList.add(new Player("user2", "Santosh", false));
-		playerList.add(new Player("user3", "Obinna", false));
-		playerList.add(new Player("user4", "Xiaoran", false));
-		playerList.add(new Player("user5", "Sandeep", false));
-		playerList.add(new Player("user6", "Umang", false));
-		playerList.add(new Player("user7", "Angelo", false));
-		playerList.add(new Player("user8", "Angie", false));
-		
-		
-		//instantiate array adapter with string array
-		dataAdapter = new MyCustomAdapter(this,R.layout.player_info,playerList);
-		
-		ListView listview = (ListView) findViewById(R.id.listView1);
-		
-		//assign listview to dataAdapter
-		listview.setAdapter(dataAdapter);
-		
-		listview.setOnItemClickListener(new OnItemClickListener(){
-			public void onItemClick(AdapterView<?> parent, View view,
-			int position, long id){
-				//when clicked, show a toast indicating the item has been clicked
-				Player player = (Player) parent.getItemAtPosition(position);
-				Toast.makeText(getApplicationContext(),
-						"Clicked On Row: " + player.getGameName(),
-						Toast.LENGTH_LONG).show(); 
-			}
-		});
-		*/
-		
-		//url parameters
-		//String urllatitude = String.valueOf(latitude);
-		//String urllongitude = String.valueOf(longitude);
-/*		
-		
-		
-		//URL to get JSON Array
-		
-*/		//url = "http://cardsvspeople.herokuapp.com/nearby?name=dummy&lat=100&long=200";
-		
-		//String urllatitude = "100";
-		//String urllongitude = "200";
+
 		
 		url = "http://cardsvspeople.herokuapp.com/nearby?name=" + myUserName + "&lat=" + latitude + "&long=" + longitude;
-		
-		//url = "http://sheltered-bastion-2512.herokuapp.com/feed.json";
 				
 		new JSONParse().execute();
 	
 	}
 	
 	private class JSONParse extends AsyncTask<String, String, JSONArray> {
-		private ProgressDialog pDialog;
 		@Override
 		   protected void onPreExecute() {
 			
-//			pDialog = new ProgressDialog(PlayerLocation.this);
-//			pDialog.setMessage("Getting Data ...");
-//			pDialog.setIndeterminate(false);
-//			pDialog.setCancelable(true);
-//			pDialog.show();
 		}
-/*		@Override
-		   protected JSONArray doInBackground(String... args) {
-			JSONParser jParser = new JSONParser();
-			Log.d("url", url);
-			//Getting JSON from URL
-			JSONArray jsonarray = jParser.getJSONArrayFromURL(url);
-			return jsonarray;
-		}
-*/
+
 		@Override
         protected JSONArray doInBackground(String... args) {
             
@@ -315,6 +259,7 @@ String gamename;
 			
 			@Override
 			public void onClick(View v) {
+				
 				StringBuffer response = new StringBuffer();
 				response.append("The following were selected...\n");
 				
@@ -342,32 +287,57 @@ String gamename;
 				}				
 				selectedPlayerNames.add(myUserName);
 				
-				AsyncTasks.CreateGame task = new CreateGame();
-				task.execute(selectedPlayerNames);
-				String gameid = null;
-				try {
-					gameid = task.get();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(selectedPlayerNames.size() > 2)
+				{
+					AsyncTasks.CreateGame task = new CreateGame();
+					task.execute(selectedPlayerNames);
+					String gameid = null;
+					try {
+						gameid = task.get();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Log.d("Santosh","gameid is "+gameid);
+					
+					//after printing a toast showing who has been selected, it just goes to the game
+					//this will be changed by probably including a "start game" button
+					System.out.println("Game ID is "+gameid);
+					
+					//String gameName = "Fake";//For user view
+					//String gameName = "Brandon";//To see dealer view
+					Intent intent = new Intent(PlayerLocation.this,GameActivity.class);
+					intent.putExtra("gamename", gamename);
+					intent.putExtra("id", gameid);
+					intent.putExtra("username", myUserName);
+					//"id","username","gamename" are the keys
+					startActivity(intent);
 				}
-				Log.d("Santosh","gameid is "+gameid);
+				else
+				{
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PlayerLocation.this);
+					alertDialogBuilder.setMessage("Please select more players.");
+					alertDialogBuilder.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+						
+					});
+					
+					// create alert dialog
+					AlertDialog alertDialog = alertDialogBuilder.create();
+
+					// show it
+					alertDialog.show();
+					
+				}
 				
-				//after printing a toast showing who has been selected, it just goes to the game
-				//this will be changed by probably including a "start game" button
-				System.out.println("Game ID is "+gameid);
-				
-				//String gameName = "Fake";//For user view
-				//String gameName = "Brandon";//To see dealer view
-				Intent intent = new Intent(PlayerLocation.this,GameActivity.class);
-				intent.putExtra("gamename", gamename);
-				intent.putExtra("id", gameid);
-				intent.putExtra("username", myUserName);
-				//"id","username","gamename" are the keys
-				startActivity(intent);
 			}
 			});
 		}
@@ -402,9 +372,9 @@ String gamename;
 				public void onClick(View v) {
 					CheckBox cb = (CheckBox) v;
 					Player player = (Player) cb.getTag();
-					Toast.makeText(getApplicationContext(),
+/*					Toast.makeText(getApplicationContext(),
 							"Clicked On Checkbox: " + cb.getText() + " is " + cb.isChecked(),
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_LONG).show(); */
 				      player.setSelected(cb.isChecked());
 				}
 				
