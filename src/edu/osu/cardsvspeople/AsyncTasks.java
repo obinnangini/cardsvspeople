@@ -24,8 +24,8 @@ import android.util.Log;
 
 public class AsyncTasks 
 {
-	
-	
+
+
 	/**
 	 * This class stores all async tasks to be called in the Application
 	 * @author obinn_000
@@ -67,20 +67,20 @@ public class AsyncTasks
 							//JSONObject tempobj = (JSONObject) playerlist.get(y);
 							String name = (String) playerlist.get(y);
 							playernames.add(name);
-	//						if (y == playerlist.size()-1)
-	//						{
-	//							System.out.print(name +". ");
-	//						}
-	//						else 
-	//						{
-	//							System.out.print(name +", ");
-	//						}
+							//						if (y == playerlist.size()-1)
+							//						{
+							//							System.out.print(name +". ");
+							//						}
+							//						else 
+							//						{
+							//							System.out.print(name +", ");
+							//						}
 						}
 						//System.out.println();
 						gameplayerslist.put(gameid, playernames);
-						
+
 					}
-				
+
 				} 
 				catch (ParseException e) {
 					// TODO Auto-generated catch block
@@ -88,11 +88,11 @@ public class AsyncTasks
 				}
 			}
 			MenuInputBundle bundle = new MenuInputBundle(gamename, gameplayerslist);
-				return bundle;
-			}
-		
+			return bundle;
+		}
+
 	}
-	
+
 	static class submitLocation extends AsyncTask<String, Void, Void>
 	{
 
@@ -102,23 +102,23 @@ public class AsyncTasks
 			String username = params[0];
 			double latitude = Double.parseDouble(params[1]);
 			double longitude = Double.parseDouble(params[2]);
-			 String urlParameters = null;
-				try {
-					urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
-					"&long=" + URLEncoder.encode(params[2], "UTF-8") + 
-					"&lat=" + URLEncoder.encode(params[1],"UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			String urlParameters = null;
+			try {
+				urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
+						"&long=" + URLEncoder.encode(params[2], "UTF-8") + 
+						"&lat=" + URLEncoder.encode(params[1],"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			executeHTTP("POST", "https://cardsvspeople.herokuapp.com/???", urlParameters);
 			return null;
-			
+
 		}
-		
+
 	}
-	
-	
+
+
 	static class CreateGame extends AsyncTask<ArrayList<String>, Void, String>
 	{
 
@@ -127,25 +127,25 @@ public class AsyncTasks
 			// TODO Auto-generated method stub
 			ArrayList<String> playernames = params[0];
 			String urlParameters = null;
-			 try {
-					urlParameters = "players=" ;
-					for (int x = 0; x < playernames.size(); x++)
+			try {
+				urlParameters = "players=" ;
+				for (int x = 0; x < playernames.size(); x++)
+				{
+					String str = "";
+					if (x != playernames.size()-1)
 					{
-						String str = "";
-						if (x != playernames.size()-1)
-						{
-							str = URLEncoder.encode(playernames.get(x) + ",", "UTF-8");
-						}
-						else
-						{
-							str = URLEncoder.encode(playernames.get(x), "UTF-8");
-						}
-						urlParameters = urlParameters + str;
+						str = URLEncoder.encode(playernames.get(x) + ",", "UTF-8");
 					}
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					else
+					{
+						str = URLEncoder.encode(playernames.get(x), "UTF-8");
+					}
+					urlParameters = urlParameters + str;
 				}
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Log.d("URLParameters",urlParameters);
 			String result = "";
 			result = executeHTTP("POST", "https://cardsvspeople.herokuapp.com/game", urlParameters);
@@ -153,9 +153,9 @@ public class AsyncTasks
 			Log.d("URLParameters",urlParameters);
 			JSONParser parser = new JSONParser();
 			Object object;
-			
+
 			//Log.d("Santosh",result);
-			
+
 			String gameid = null;
 			try {
 				object = parser.parse(result);
@@ -167,16 +167,16 @@ public class AsyncTasks
 			}
 			return gameid;
 		}
-		
+
 	}
-	
-	
+
+
 	static class GetGame extends AsyncTask<String, Void, InfoBundle>
 	{
 
 		@Override
 		protected InfoBundle doInBackground(String... params) {
-			
+
 			String gameid = params[0];
 			String username = params[1];
 			String gamename = params[2];
@@ -199,7 +199,7 @@ public class AsyncTasks
 				Player tempPlayer = null;
 				JSONParser parser = new JSONParser();
 				Object object;
-				
+
 				try 
 				{
 					object = parser.parse(response);
@@ -283,12 +283,12 @@ public class AsyncTasks
 							}
 						}
 						currRound = new Round(usersubmitMap, roundBlackCard);
-						
+
 					}
 					newGame = new Game(usernames, gamenames, currRound, playerscores, dealer, winner);
 					bundle = new InfoBundle(newGame, tempPlayer);
-					
-						
+
+
 				} 
 				catch (ParseException e) 
 				{
@@ -299,9 +299,9 @@ public class AsyncTasks
 			}
 			return bundle;
 		}
-		
+
 	}
-	
+
 	static class DrawTwo extends AsyncTask<InputBundle, Void, ArrayList<WhiteCard>>
 	{
 
@@ -311,24 +311,24 @@ public class AsyncTasks
 			String gameid = bundle.getId();
 			String username = bundle.getPlayerName();
 			// TODO Auto-generated method stub
-			 String urlParameters = null;
-				try {
-					urlParameters = "game=" + URLEncoder.encode(gameid, "UTF-8") +
-					"&name=" + URLEncoder.encode(username, "UTF-8") + 
-					"&quantity=" + URLEncoder.encode(Integer.toString(2),"UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				 String temp = executeHTTP("PUT","http://cardsvspeople.herokuapp.com/draw", urlParameters);
-				 ArrayList<WhiteCard> newCards = new ArrayList<WhiteCard>();
-				newCards = getnewCards(temp);
-				return newCards;
-				 
+			String urlParameters = null;
+			try {
+				urlParameters = "game=" + URLEncoder.encode(gameid, "UTF-8") +
+						"&name=" + URLEncoder.encode(username, "UTF-8") + 
+						"&quantity=" + URLEncoder.encode(Integer.toString(2),"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String temp = executeHTTP("PUT","http://cardsvspeople.herokuapp.com/draw", urlParameters);
+			ArrayList<WhiteCard> newCards = new ArrayList<WhiteCard>();
+			newCards = getnewCards(temp);
+			return newCards;
+
 		}
-		
+
 	}
-	
+
 	static class ChooseWinner extends AsyncTask<String, Void, Void>
 	{
 
@@ -338,17 +338,17 @@ public class AsyncTasks
 			String gameid = params[0];
 			String winner = params[1];
 			String urlParameters = null;
-			 try {
-					urlParameters = "game=" + URLEncoder.encode(gameid, "UTF-8") +
-					"&winner=" + URLEncoder.encode(winner, "UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			 String temp = executeHTTP("POST","http://cardsvspeople.herokuapp.com/vote", urlParameters);
-			 return null;
+			try {
+				urlParameters = "game=" + URLEncoder.encode(gameid, "UTF-8") +
+						"&winner=" + URLEncoder.encode(winner, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String temp = executeHTTP("POST","http://cardsvspeople.herokuapp.com/vote", urlParameters);
+			return null;
 		}
-		
+
 	}
 
 	static class SubmitCard extends AsyncTask<InputBundle, Void, ArrayList<WhiteCard>>
@@ -361,28 +361,28 @@ public class AsyncTasks
 			String playername = bund.getPlayerName();
 			ArrayList<Integer> cards = bund.getList();
 			String urlParameters = null;
-			 try {
-					urlParameters = "game=" + URLEncoder.encode(gameid, "UTF-8") +
-					"&name=" + URLEncoder.encode(playername, "UTF-8") + 
-					"&cards=";
-					for (int x = 0; x < cards.size(); x++)
+			try {
+				urlParameters = "game=" + URLEncoder.encode(gameid, "UTF-8") +
+						"&name=" + URLEncoder.encode(playername, "UTF-8") + 
+						"&cards=";
+				for (int x = 0; x < cards.size(); x++)
+				{
+					String str = "";
+					if (x != cards.size()-1)
 					{
-						String str = "";
-						if (x != cards.size()-1)
-						{
-							str = URLEncoder.encode(Integer.toString(cards.get(x)) + ",", "UTF-8");
-						}
-						else
-						{
-							str = URLEncoder.encode(Integer.toString(cards.get(x)), "UTF-8");
-						}
-						urlParameters = urlParameters + str;
+						str = URLEncoder.encode(Integer.toString(cards.get(x)) + ",", "UTF-8");
 					}
-					Log.d("Obinna",urlParameters);
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					else
+					{
+						str = URLEncoder.encode(Integer.toString(cards.get(x)), "UTF-8");
+					}
+					urlParameters = urlParameters + str;
 				}
+				Log.d("Obinna",urlParameters);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// TODO Auto-generated method stub
 			String temp = executeHTTP("POST","http://cardsvspeople.herokuapp.com/play", urlParameters);
 			ArrayList<WhiteCard> newCards = new ArrayList<WhiteCard>();
@@ -390,7 +390,7 @@ public class AsyncTasks
 			return newCards;
 		}
 	}
-		
+
 	static class RegisterUser extends AsyncTask<String, Void, Void>
 	{
 
@@ -400,23 +400,23 @@ public class AsyncTasks
 			String username = params[0];
 			String nickname = params[1];
 			String password = params[2];
-			
-			 String urlParameters = "";
-	           try {
-	                  urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
-	                  "&password=" + URLEncoder.encode(password, "UTF-8") +
-	                  "&nickname=" + URLEncoder.encode(nickname, "UTF-8");
-	              } catch (UnsupportedEncodingException e) {
-	                  // TODO Auto-generated catch block
-	                  e.printStackTrace();
-	              }
-	           executeHTTP("POST","http://cardsvspeople.herokuapp.com/user", urlParameters);
-	           
+
+			String urlParameters = "";
+			try {
+				urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
+						"&password=" + URLEncoder.encode(password, "UTF-8") +
+						"&nickname=" + URLEncoder.encode(nickname, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			executeHTTP("POST","http://cardsvspeople.herokuapp.com/user", urlParameters);
+
 			return null;
 		}
-		
+
 	}
-	
+
 
 	static class LoginUser extends AsyncTask<String, Void, String>
 	{
@@ -426,21 +426,21 @@ public class AsyncTasks
 			// TODO Auto-generated method stub
 			String username = params[0];
 			String password = params[1];
-		
-			 String urlParameters = "";
-	           try {
-	                  urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
-	                  "&password=" + URLEncoder.encode(password, "UTF-8");
-	              } catch (UnsupportedEncodingException e) {
-	                  // TODO Auto-generated catch block
-	                  e.printStackTrace();
-	              }
-	           
+
+			String urlParameters = "";
+			try {
+				urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
+						"&password=" + URLEncoder.encode(password, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			String result =  executeHTTP("POST","http://cardsvspeople.herokuapp.com/login", urlParameters);    
-	           
+
 			return result;
 		}
-		
+
 	}
 
 	public static ArrayList<WhiteCard> getnewCards(String input)
@@ -487,7 +487,7 @@ public class AsyncTasks
 			while((inputString = inBufferedReader.readLine()) != null)
 			{
 				response.append(inputString);
-				
+
 			}
 			inBufferedReader.close();
 			//Log.d("Obinna", response.toString());
@@ -508,58 +508,58 @@ public class AsyncTasks
 		}
 	}
 
-	
+
 	public static String executeHTTP(String reqMethod, String targetURL, String urlParameters)
-	  {
+	{
 		Log.d("URLParameters",urlParameters+" in executeHTTP");
-	    URL url;
-	    HttpURLConnection connection = null;  
-	    try {
-	      //Create connection
-	      url = new URL(targetURL);
-	      connection = (HttpURLConnection)url.openConnection();
-	      connection.setRequestMethod(reqMethod);
-	      connection.setRequestProperty("Content-Type", 
-	           "application/x-www-form-urlencoded");
-				
-	      connection.setRequestProperty("Content-Length", "" + 
-	               Integer.toString(urlParameters.getBytes().length));
-	      connection.setRequestProperty("Content-Language", "en-US");  
-				
-	      connection.setUseCaches (false);
-	      connection.setDoInput(true);
-	      connection.setDoOutput(true);
+		URL url;
+		HttpURLConnection connection = null;  
+		try {
+			//Create connection
+			url = new URL(targetURL);
+			connection = (HttpURLConnection)url.openConnection();
+			connection.setRequestMethod(reqMethod);
+			connection.setRequestProperty("Content-Type", 
+					"application/x-www-form-urlencoded");
 
-	      //Send request
-	      DataOutputStream wr = new DataOutputStream (
-	                  connection.getOutputStream ());
-	      wr.writeBytes (urlParameters);
-	      wr.flush ();
-	      wr.close ();
+			connection.setRequestProperty("Content-Length", "" + 
+					Integer.toString(urlParameters.getBytes().length));
+			connection.setRequestProperty("Content-Language", "en-US");  
 
-	      //Get Response	
-	      InputStream is = connection.getInputStream();
-	      BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-	      String line;
-	      StringBuffer response = new StringBuffer(); 
-	      while((line = rd.readLine()) != null) {
-	        response.append(line);
-	        response.append('\r');
-	      }
-	      rd.close();
-	      return response.toString();
+			connection.setUseCaches (false);
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
 
-	    } catch (Exception e) {
+			//Send request
+			DataOutputStream wr = new DataOutputStream (
+					connection.getOutputStream ());
+			wr.writeBytes (urlParameters);
+			wr.flush ();
+			wr.close ();
 
-	      e.printStackTrace();
-	      return null;
+			//Get Response	
+			InputStream is = connection.getInputStream();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+			String line;
+			StringBuffer response = new StringBuffer(); 
+			while((line = rd.readLine()) != null) {
+				response.append(line);
+				response.append('\r');
+			}
+			rd.close();
+			return response.toString();
 
-	    } finally {
+		} catch (Exception e) {
 
-	      if(connection != null) {
-	        connection.disconnect(); 
-	      }
-	    }
-	  }
+			e.printStackTrace();
+			return null;
+
+		} finally {
+
+			if(connection != null) {
+				connection.disconnect(); 
+			}
+		}
+	}
 
 }
