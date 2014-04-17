@@ -23,8 +23,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//Problem is, the values of these data structures arent being updated. I should return an instance of the Game class instead.
-//FIX TOMORROW!!!!!!!!!!!!!!!!!!!!!
 public class GameActivity extends Activity implements OnClickListener {
 
 //	ArrayList<ArrayList<String>> playerhands = new ArrayList<ArrayList<String>>();
@@ -131,7 +129,15 @@ public class GameActivity extends Activity implements OnClickListener {
 							dealerlisttext.add(card.getText());
 						}
 					}
-					
+					TextView dealermsg = (TextView) findViewById(R.id.dealermsg);
+					if(dealerlisttext.size() == currGame.getCurrentRound().getBlackCard().getCardsNeeded())
+					{
+						dealermsg.setText("All players have submitted cards");
+					}
+					else 
+					{
+						dealermsg.setText("All players have not yet submitted cards. Press back and re select game to check for new cards");
+					}
 					TextView blackcardtext = (TextView) findViewById(R.id.dealer_black_card);
 					blackcardtext.setText(currGame.getCurrentRound().getBlackCard().getText());
 					blackcardtext.setOnClickListener(new OnClickListener() 
@@ -203,9 +209,17 @@ public class GameActivity extends Activity implements OnClickListener {
 											public void onClick(DialogInterface dialog, int which) {
 												// TODO Auto-generated method stub
 												//Call async task to post winner, and then 
-											AsyncTasks.ChooseWinner task = new ChooseWinner();
-											task.execute(gameid, username);
-											onStart();
+												if(dealerlisttext.size() == currGame.getCurrentRound().getBlackCard().getCardsNeeded())
+												{
+													AsyncTasks.ChooseWinner task = new ChooseWinner();
+													task.execute(gameid, username);
+													onStart();
+												}
+												else 
+												{
+													Toast.makeText(getApplicationContext(), "All players have not submitted cards!", Toast.LENGTH_SHORT).show();
+												}
+											
 											}
 										});
 								alertDialogBuilder.
