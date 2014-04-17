@@ -50,7 +50,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 		 * This is commented for now
 		 */
 		Map<String,ArrayList<String>> gameplayerslist = new HashMap<String, ArrayList<String>>();
-		
+
 		AsyncTasks.GameList task = new GameList();
 		task.execute(username);
 		try {
@@ -70,15 +70,15 @@ public class MenuActivity extends Activity implements OnClickListener {
 		}
 		else 
 		{
-		
-	//		for (String key: gameplayerslist.keySet())
-	//		{
-	//			for (String str: gameplayerslist.get(key))
-	//				{
-	//					Log.d("Obinna",str + " ");
-	//				}
-	//			//System.out.println();
-	//		}
+
+			//		for (String key: gameplayerslist.keySet())
+			//		{
+			//			for (String str: gameplayerslist.get(key))
+			//				{
+			//					Log.d("Obinna",str + " ");
+			//				}
+			//			//System.out.println();
+			//		}
 			final String [] gameids= gameplayerslist.keySet().toArray(new String[gameplayerslist.keySet().size()]);
 			ArrayList<ArrayList<String>> gameplayers = new ArrayList<ArrayList<String>>();
 			for (String str : gameplayerslist.keySet())
@@ -88,7 +88,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 			Log.d("Obinna","Game player size" + Integer.toString(gameplayerslist.size()));
 			listView.setAdapter(new GameListAdapter(getApplicationContext(), gameids, gameplayers));
 			listView.setOnItemClickListener(new OnItemClickListener() {
-	
+
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 						long arg3) 
@@ -101,18 +101,12 @@ public class MenuActivity extends Activity implements OnClickListener {
 					intent.putExtra("username", username);
 					intent.putExtra("gamename", gamename);
 					startActivity(intent);
-					
+
 				}
 			});
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu, menu);
-		return true;
-	}
 	protected void OnStart()
 	{
 		//super.onStart();
@@ -135,48 +129,48 @@ public class MenuActivity extends Activity implements OnClickListener {
 	}
 	@Override
 	public void onClick(View v) {
-		
+
 		// TODO Auto-generated method stub
 		switch(v.getId())
 		{
-			case R.id.game_start_button:
-			{
-				//Use an intent to start game Activity, and pass user's game name
-				//Fetch game name from user class, or server
-				Intent intent = new Intent(MenuActivity.this,PlayerLocation.class);
-				intent.putExtra("username", username);
-				intent.putExtra("gamename", gamename);
-				startActivity(intent);
-				break;
-			}
-			case R.id.help_button:
-			{
-				Log.d("Help Button", "Button pressed");
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MenuActivity.this);
-				alertDialogBuilder.setMessage(getResources().getString(R.string.help_message));
-				alertDialogBuilder
-					.setPositiveButton("OK",
-							new DialogInterface.OnClickListener() {
-								
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									// TODO Auto-generated method stub
-									dialog.cancel();
-								}
-							});
-				
-				// create alert dialog
-				AlertDialog alertDialog = alertDialogBuilder.create();
-			 
-				// show it
-				alertDialog.show();
-				break;
-			
-			}
-				
+		case R.id.game_start_button:
+		{
+			//Use an intent to start game Activity, and pass user's game name
+			//Fetch game name from user class, or server
+			Intent intent = new Intent(MenuActivity.this,PlayerLocation.class);
+			intent.putExtra("username", username);
+			intent.putExtra("gamename", gamename);
+			startActivity(intent);
+			break;
+		}
+		case R.id.help_button:
+		{
+			Log.d("Help Button", "Button pressed");
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MenuActivity.this);
+			alertDialogBuilder.setMessage(getResources().getString(R.string.help_message));
+			alertDialogBuilder
+			.setPositiveButton("OK",
+					new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					dialog.cancel();
+				}
+			});
+
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+
+			// show it
+			alertDialog.show();
+			break;
+
+		}
+
 		}
 	}
 
-	
+
 
 }
