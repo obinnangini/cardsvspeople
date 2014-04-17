@@ -133,6 +133,8 @@ public class GameActivity extends Activity implements OnClickListener {
 						dealermsg.setText("All players have not yet submitted cards. Press back and re select game to check for new cards");
 					}
 					TextView blackcardtext = (TextView) findViewById(R.id.dealer_black_card);
+					TextView scoreView = (TextView) findViewById(R.id.scoreview);
+					scoreView.setText("Score: " + Integer.toString(pl.getScore()));
 					blackcardtext.setText(currGame.getCurrentRound().getBlackCard().getText());
 					blackcardtext.setOnClickListener(new OnClickListener()
 					{
