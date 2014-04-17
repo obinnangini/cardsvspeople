@@ -41,8 +41,8 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import edu.osu.cardsvspeople.AsyncTasks.CreateGame;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -77,21 +77,36 @@ String gamename;
 		Intent intent = getIntent();
 		myUserName = intent.getStringExtra("username");
 		gamename = intent.getStringExtra("gamename");
-		
-		//loading map by calling initializeMap()
-		try{
-			//Loading map
-			initializeMap();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		displayListView();
-		
-		checkRequestButtonClick();
 	}
+		
 
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		//dataAdapter.clear();
+	//loading map by calling initializeMap()
+			try{
+				//Loading map
+				initializeMap();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			displayListView();
+			
+			Button refresh = (Button) findViewById(R.id.locationRefresh);
+			refresh.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					onStart();
+				}
+			});
+			checkRequestButtonClick();
+		}
 //function to load map. If map is not created, this method will create it for you
 	private void initializeMap() {
 		if (googleMap == null) {
@@ -209,6 +224,7 @@ String gamename;
 		@Override
 		protected void onPostExecute(JSONArray jsonarray){
 	//		pDialog.dismiss();
+			nearbyplayerList.clear();
 			try {
 				for(int i = 0; i < jsonarray.length(); i++) {
 					JSONObject jsonObject = (JSONObject) jsonarray.get(i);

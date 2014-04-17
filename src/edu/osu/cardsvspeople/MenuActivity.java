@@ -111,9 +111,10 @@ public class MenuActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	protected void OnStart()
+	@Override
+	protected void onStart()
 	{
-		//super.onStart();
+		super.onStart();
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " started." );
 	}
