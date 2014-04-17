@@ -130,7 +130,7 @@ public class GameActivity extends Activity implements OnClickListener {
 						}
 					}
 					TextView dealermsg = (TextView) findViewById(R.id.dealermsg);
-					if(dealerlisttext.size() == currGame.getCurrentRound().getBlackCard().getCardsNeeded())
+					if(dealerlisttext.size() == (currGame.getCurrentRound().getBlackCard().getCardsNeeded() * (currGame.getPlayers().size()-1)))
 					{
 						dealermsg.setText("All players have submitted cards");
 					}
@@ -209,7 +209,7 @@ public class GameActivity extends Activity implements OnClickListener {
 											public void onClick(DialogInterface dialog, int which) {
 												// TODO Auto-generated method stub
 												//Call async task to post winner, and then 
-												if(dealerlisttext.size() == currGame.getCurrentRound().getBlackCard().getCardsNeeded())
+												if(dealerlisttext.size() == (currGame.getCurrentRound().getBlackCard().getCardsNeeded() * (currGame.getPlayers().size()-1)))
 												{
 													AsyncTasks.ChooseWinner task = new ChooseWinner();
 													task.execute(gameid, username);
