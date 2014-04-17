@@ -81,6 +81,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 			//			//System.out.println();
 			//		}
 			TextView welcome = (TextView) findViewById(R.id.bannertext);
+			Log.d("Obinna", "Gamename is "  + gamename);
 			welcome.setText("Welcome " + gamename + "!");
 			final String [] gameids= gameplayerslist.keySet().toArray(new String[gameplayerslist.keySet().size()]);
 			ArrayList<ArrayList<String>> gameplayers = new ArrayList<ArrayList<String>>();

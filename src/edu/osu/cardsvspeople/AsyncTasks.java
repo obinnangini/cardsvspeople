@@ -404,8 +404,8 @@ public class AsyncTasks
 			 String urlParameters = "";
 	           try {
 	                  urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
-	                  "&password=" + URLEncoder.encode(nickname, "UTF-8") +
-	                  "&nickname=" + URLEncoder.encode(password, "UTF-8");
+	                  "&password=" + URLEncoder.encode(password, "UTF-8") +
+	                  "&nickname=" + URLEncoder.encode(nickname, "UTF-8");
 	              } catch (UnsupportedEncodingException e) {
 	                  // TODO Auto-generated catch block
 	                  e.printStackTrace();
