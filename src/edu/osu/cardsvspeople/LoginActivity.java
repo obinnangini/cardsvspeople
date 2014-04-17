@@ -33,36 +33,36 @@ import edu.osu.cardsvspeople.AsyncTasks.LoginUser;
 
 public class LoginActivity extends Activity {
 
-   private TextView attempts;
-   private Button login;
-   int counter = 3;
-   private EditText userNameArea,passWordArea;
-   private String userName ;
-   private String passWord ;
-   private static String nickName ;
-   Button btnShowLocation;
-   GPSTracker gps;
+	private TextView attempts;
+	private Button login;
+	int counter = 3;
+	private EditText userNameArea,passWordArea;
+	private String userName ;
+	private String passWord ;
+	private static String nickName ;
+	Button btnShowLocation;
+	GPSTracker gps;
 
-   @Override
-   protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      setContentView(R.layout.activity_login);
-      userNameArea = (EditText)findViewById(R.id.editText1);
-      passWordArea = (EditText)findViewById(R.id.editText2);
-      attempts = (TextView)findViewById(R.id.textView5);
-      attempts.setText(Integer.toString(counter));
-      login = (Button)findViewById(R.id.buttonLogin);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		userNameArea = (EditText)findViewById(R.id.editText1);
+		passWordArea = (EditText)findViewById(R.id.editText2);
+		attempts = (TextView)findViewById(R.id.textView5);
+		attempts.setText(Integer.toString(counter));
+		login = (Button)findViewById(R.id.buttonLogin);
 
-      login.setOnClickListener(new View.OnClickListener() {
+		login.setOnClickListener(new View.OnClickListener() {
 
-          public void onClick(View arg0) {
-                              // Closing registration screen
-              // Switching to Login Screen/closing register screen
-        	  login();
-          }
-      });
+			public void onClick(View arg0) {
+				// Closing registration screen
+				// Switching to Login Screen/closing register screen
+				login();
+			}
+		});
 
-      /*
+		/*
       btnShowLocation = (Button) findViewById(R.id.buttonGPS);
 
       // show location button click event
@@ -237,14 +237,6 @@ public class LoginActivity extends Activity {
 
 		return gamename;
 
-	}
-
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
 	}
 
 

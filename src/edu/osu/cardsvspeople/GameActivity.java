@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 public class GameActivity extends Activity implements OnClickListener {
 
-//	ArrayList<ArrayList<String>> playerhands = new ArrayList<ArrayList<String>>();
+	//	ArrayList<ArrayList<String>> playerhands = new ArrayList<ArrayList<String>>();
 	UserHandAdapter adapter;
 	Player pl= null;
 	ArrayList<Integer> playercardids = new ArrayList<Integer>();
@@ -34,29 +34,23 @@ public class GameActivity extends Activity implements OnClickListener {
 	String username;
 	String gamename;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	protected void onCreate(Bundle savedInstanceState)
 	{
-		
+
 		super.onCreate(savedInstanceState);
 		String currentactivity = this.getClass().getSimpleName();
 		Intent intent = getIntent();
 		gameid = intent.getStringExtra("id");
 		username = intent.getStringExtra("username");
-				//intent.getStringExtra("username");
+		//intent.getStringExtra("username");
 		gamename = intent.getStringExtra("gamename");
 		Log.d("Obinna", "Username is " + username);
 		Log.d("Obinna", "Gamename is " + gamename);
 		Log.d("Life cycle notes", currentactivity + " created." );
-		
-		
+
+
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.game, menu);
-		return true;
-	}
 	@Override
 	protected void onStart()
 	{
@@ -66,7 +60,7 @@ public class GameActivity extends Activity implements OnClickListener {
 		//See AsyncTasks class
 		AsyncTasks.GetGame task = new GetGame();
 		task.execute(gameid, username, gamename);
-		
+
 		InfoBundle bunds = null;
 		try {
 			bunds = task.get();
@@ -83,11 +77,11 @@ public class GameActivity extends Activity implements OnClickListener {
 			TextView error = (TextView) findViewById(R.id.error_msg);
 			error.setText("Error: Game not found");
 		}
-		else 
+		else
 		{
 			final Game currGame = bunds.getGame();
 			pl = bunds.getPlayer();
-			
+
 			if(currGame.getWinner() != null)
 			{
 				setContentView(R.layout.error_page);
@@ -95,12 +89,12 @@ public class GameActivity extends Activity implements OnClickListener {
 				error.setText("Game is over! Winner is " + currGame.getWinner());
 				error.setBackgroundColor(getResources().getColor(R.color.white));
 				error.setTextColor(getResources().getColor(R.color.black));
-				
+
 			}
 			else
 			{
 				//Get hand for a specific player for display purposes
-				
+
 				//Also get current black card text for display
 				//Round currRound = currGame.getCurrentRound();
 				/*
@@ -134,118 +128,118 @@ public class GameActivity extends Activity implements OnClickListener {
 					{
 						dealermsg.setText("All players have submitted cards");
 					}
-					else 
+					else
 					{
 						dealermsg.setText("All players have not yet submitted cards. Press back and re select game to check for new cards");
 					}
 					TextView blackcardtext = (TextView) findViewById(R.id.dealer_black_card);
 					blackcardtext.setText(currGame.getCurrentRound().getBlackCard().getText());
-					blackcardtext.setOnClickListener(new OnClickListener() 
+					blackcardtext.setOnClickListener(new OnClickListener()
 					{
 						@Override
-						public void onClick(View v) 
+						public void onClick(View v)
 						{
-						
+
 							Log.d("Black Card", "Dialog should be launched");
-							//Launch popup window showing card details 
+							//Launch popup window showing card details
 							View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
 							TextView temp = (TextView) findViewById(R.id.dealer_black_card);
 							TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
 							tView.setText(temp.getText().toString());
 							tView.setTextColor(getResources().getColor(R.color.white));
 							tView.setBackgroundColor(getResources().getColor(R.color.black));
-							
+
 							Log.d("Black Card", "View prepared");
 							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
 							alertDialogBuilder.setView(v1);
 							alertDialogBuilder
-								.setPositiveButton("OK",
-										new DialogInterface.OnClickListener() {
-											
-											@Override
-											public void onClick(DialogInterface dialog, int which) {
-												// TODO Auto-generated method stub
-												dialog.cancel();
-											}
-										});
+							.setPositiveButton("OK",
+									new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									dialog.cancel();
+								}
+							});
 							Log.d("Black Card", "Positive button set");
 							// create alert dialog
 							AlertDialog alertDialog = alertDialogBuilder.create();
 							WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-						    lp.copyFrom(alertDialog.getWindow().getAttributes());
-						    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-			 
+							lp.copyFrom(alertDialog.getWindow().getAttributes());
+							lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
 							// show it
 							alertDialog.show();
 							Log.d("Black Card", "View showing");
 						}
 					});
 					//Setting listview adapter and reaction to selection
-					
+
 					TwoWayView listView = (TwoWayView) findViewById(R.id.dealercardlist);
 					UserHandAdapter roundadapter = new UserHandAdapter(getApplicationContext(), dealerlisttext);
 					listView.setAdapter(roundadapter);
 					listView.setOnItemClickListener(new OnItemClickListener() {
-	
+
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 								long arg3) {
 							// TODO Auto-generated method stub
 							//Log.d("Card selected", "Dialog should be launched");
-							
-							//Launch popup window showing card details 
+
+							//Launch popup window showing card details
 							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
 							View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
-							
+
 							TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
 							tView.setText(dealerlisttext.get(arg2));
-							
+
 							alertDialogBuilder.setView(v1);
 							alertDialogBuilder
-								.setPositiveButton("Select Card",
-										new DialogInterface.OnClickListener() {
-											
-											@Override
-											public void onClick(DialogInterface dialog, int which) {
-												// TODO Auto-generated method stub
-												//Call async task to post winner, and then 
-												if(dealerlisttext.size() == (currGame.getCurrentRound().getBlackCard().getCardsNeeded() * (currGame.getPlayers().size()-1)))
-												{
-													AsyncTasks.ChooseWinner task = new ChooseWinner();
-													task.execute(gameid, username);
-													onStart();
-												}
-												else 
-												{
-													Toast.makeText(getApplicationContext(), "All players have not submitted cards!", Toast.LENGTH_SHORT).show();
-												}
-											
-											}
-										});
-								alertDialogBuilder.
-								setNegativeButton("Cancel", new DialogInterface.OnClickListener() 
-								{
-									@Override
-									public void onClick(DialogInterface dialog, int which) {
-										// Get rid of dialog
-										dialog.cancel();
+							.setPositiveButton("Select Card",
+									new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									//Call async task to post winner, and then
+									if(dealerlisttext.size() == (currGame.getCurrentRound().getBlackCard().getCardsNeeded() * (currGame.getPlayers().size()-1)))
+									{
+										AsyncTasks.ChooseWinner task = new ChooseWinner();
+										task.execute(gameid, username);
+										onStart();
 									}
-								});
-							
+									else
+									{
+										Toast.makeText(getApplicationContext(), "All players have not submitted cards!", Toast.LENGTH_SHORT).show();
+									}
+
+								}
+							});
+							alertDialogBuilder.
+							setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+							{
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// Get rid of dialog
+									dialog.cancel();
+								}
+							});
+
 							// create alert dialog
 							AlertDialog alertDialog = alertDialogBuilder.create();
 							WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-						    lp.copyFrom(alertDialog.getWindow().getAttributes());
-						    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-						 
+							lp.copyFrom(alertDialog.getWindow().getAttributes());
+							lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
 							// show it
 							alertDialog.show();
-						
-							
+
+
 						}
 					});;
 				}
-				else 
+				else
 				{
 					//Show game view
 					setContentView(R.layout.activity_game);
@@ -254,7 +248,7 @@ public class GameActivity extends Activity implements OnClickListener {
 						playercardids.add(crd.getId());
 						playercardtexts.add(crd.getText());
 					}
-	
+
 					TextView scoreView = (TextView) findViewById(R.id.scoreview);
 					scoreView.setText("Score: " + Integer.toString(pl.getScore()));
 					//Also get current black card text for display
@@ -267,53 +261,53 @@ public class GameActivity extends Activity implements OnClickListener {
 					//Log.d("Obinna", "Got past listener sset");
 					TextView blackcardtext = (TextView) findViewById(R.id.black_card);
 					blackcardtext.setText(currGame.getCurrentRound().getBlackCard().getText());
-					blackcardtext.setOnClickListener(new OnClickListener() 
+					blackcardtext.setOnClickListener(new OnClickListener()
 					{
 						@Override
-						public void onClick(View v) 
+						public void onClick(View v)
 						{
 							Log.d("Black Card", "Dialog should be launched");
-							//Launch popup window showing card details 
+							//Launch popup window showing card details
 							View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
 							TextView temp = (TextView) findViewById(R.id.black_card);
 							TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
 							tView.setText(temp.getText().toString());
 							tView.setTextColor(getResources().getColor(R.color.white));
 							tView.setBackgroundColor(getResources().getColor(R.color.black));
-							
+
 							Log.d("Black Card", "View prepared");
 							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
 							alertDialogBuilder.setView(v1);
 							alertDialogBuilder
-								.setPositiveButton("OK",
-										new DialogInterface.OnClickListener() {
-											
-											@Override
-											public void onClick(DialogInterface dialog, int which) {
-												// TODO Auto-generated method stub
-												dialog.cancel();
-											}
-										});
+							.setPositiveButton("OK",
+									new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									dialog.cancel();
+								}
+							});
 							Log.d("Black Card", "Positive button set");
 							// create alert dialog
 							AlertDialog alertDialog = alertDialogBuilder.create();
 							WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-						    lp.copyFrom(alertDialog.getWindow().getAttributes());
-						    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-			 
+							lp.copyFrom(alertDialog.getWindow().getAttributes());
+							lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
 							// show it
 							alertDialog.show();
 							Log.d("Black Card", "View showing");
-						
+
 						}
 					});
-					
+
 					//Handle click of submit button
-					
+
 					final Button submit =(Button) findViewById(R.id.submit_card);
 					final int numCards = currGame.getCurrentRound().getBlackCard().getCardsNeeded();
 					submit.setOnClickListener(new OnClickListener() {
-						
+
 						@Override
 						public void onClick(View v) {
 							Log.d("Obinna", "Submit button pushed");
@@ -337,12 +331,12 @@ public class GameActivity extends Activity implements OnClickListener {
 							{
 								cardstosubmit.add(purg3text);
 							}
-							
+
 							if(cardstosubmit.size() != numCards)
 							{
 								Toast.makeText(getApplicationContext(), "Incorrect number of cards submitted for round", Toast.LENGTH_SHORT).show();
 							}
-							else 
+							else
 							{
 								if(currGame.getCurrentRound().getBlackCard().getCardsNeeded() == 3)
 								{
@@ -363,7 +357,7 @@ public class GameActivity extends Activity implements OnClickListener {
 									{
 										pl.AddtoHand(crd);
 									}
-									
+
 								}
 								//Send cardstosubmit to server, clear textviews
 								ArrayList<Integer> cardstosubmitids = new ArrayList<Integer>();
@@ -396,9 +390,9 @@ public class GameActivity extends Activity implements OnClickListener {
 								purg2.setText("");
 								purg3.setText("");
 								submit.setEnabled(false);
-	
+
 							}
-							
+
 						}
 					});
 					final ArrayList<String> playerhandtext = new ArrayList<String>();
@@ -410,78 +404,78 @@ public class GameActivity extends Activity implements OnClickListener {
 					{
 						playerhandtext.add(card.getText());
 					}
-					
+
 					TwoWayView listView = (TwoWayView) findViewById(R.id.userhandlist);
 					adapter = new UserHandAdapter(getApplicationContext(), playerhandtext);
 					listView.setAdapter(adapter);
 					listView.setOnItemClickListener(new OnItemClickListener() {
-	
+
 						@Override
 						public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2,
 								long arg3) {
 							// TODO Auto-generated method stub
 							//Log.d("Card selected", "Dialog should be launched");
-							
-							//Launch popup window showing card details 
+
+							//Launch popup window showing card details
 							//LayoutInflater li = LayoutInflater.from(getBaseContext());
 							AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
 							View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
-							
+
 							TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
 							//String tviewtextString = handarray[arg2];
 							tView.setText(pl.getHand().get(arg2).getText());
-							
+
 							alertDialogBuilder.setView(v1);
 							//Log.d("Textview", handarray[arg2]);
 							//alertDialogBuilder.setMessage("Test message");
 							alertDialogBuilder
 							.setPositiveButton("Select Card",
 									new DialogInterface.OnClickListener() {
-										
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											// TODO Auto-generated method stub
-											//Move text to purgatory view
-											//Remove from player hand and view as well
-											
-											String text =pl.getHand().get(arg2).getText();
-											Log.d("Obinna", "Text is  " + text + " and pos is " + arg2);
-											pl.RemovefromHand(arg2);
-											adapter.remove(arg2);
-											//sLog.d("Obinna", "PLayer hand sze is " + pl.getHand().size());
-											adapter.notifyDataSetChanged();									
-											TextView purg1 = (TextView) findViewById(R.id.purg_1);
-											TextView purg2 = (TextView) findViewById(R.id.purg_2);
-											TextView purg3 = (TextView) findViewById(R.id.purg_3);
-											if(purg2.getText().toString().equals(""))
-											{
-												purg2.setText(text);
-											}
-											else if (purg1.getText().toString().equals("") && (purg3.getText().toString().equals("")))
-											{
-												String tempString = purg2.getText().toString();
-												purg2.setText("");
-												purg3.setText(text);
-												purg1.setText(tempString);
-											}
-											else if(purg1.getText().toString().equals("") ) 
-											{
-												purg1.setText(text);
-											}
-											else if (purg3.getText().toString().equals("")) 
-											{
-												purg3.setText(text);	
-											}
-											else 
-											{
-												Toast.makeText(getApplicationContext(), "Purgatory list full", Toast.LENGTH_SHORT).show();
-											}
-											
-											
-										}
-									});
+
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									// TODO Auto-generated method stub
+									//Move text to purgatory view
+									//Remove from player hand and view as well
+
+									String text =pl.getHand().get(arg2).getText();
+									Log.d("Obinna", "Text is  " + text + " and pos is " + arg2);
+									pl.RemovefromHand(arg2);
+									adapter.remove(arg2);
+									//sLog.d("Obinna", "PLayer hand sze is " + pl.getHand().size());
+									adapter.notifyDataSetChanged();
+									TextView purg1 = (TextView) findViewById(R.id.purg_1);
+									TextView purg2 = (TextView) findViewById(R.id.purg_2);
+									TextView purg3 = (TextView) findViewById(R.id.purg_3);
+									if(purg2.getText().toString().equals(""))
+									{
+										purg2.setText(text);
+									}
+									else if (purg1.getText().toString().equals("") && (purg3.getText().toString().equals("")))
+									{
+										String tempString = purg2.getText().toString();
+										purg2.setText("");
+										purg3.setText(text);
+										purg1.setText(tempString);
+									}
+									else if(purg1.getText().toString().equals("") )
+									{
+										purg1.setText(text);
+									}
+									else if (purg3.getText().toString().equals(""))
+									{
+										purg3.setText(text);
+									}
+									else
+									{
+										Toast.makeText(getApplicationContext(), "Purgatory list full", Toast.LENGTH_SHORT).show();
+									}
+
+
+								}
+							});
 							alertDialogBuilder.
-							setNegativeButton("Cancel", new DialogInterface.OnClickListener() 
+							setNegativeButton("Cancel", new DialogInterface.OnClickListener()
 							{
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
@@ -489,27 +483,27 @@ public class GameActivity extends Activity implements OnClickListener {
 									dialog.cancel();
 								}
 							});
-						
-							
+
+
 							// create alert dialog
 							AlertDialog alertDialog = alertDialogBuilder.create();
 							WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-						    lp.copyFrom(alertDialog.getWindow().getAttributes());
-						    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+							lp.copyFrom(alertDialog.getWindow().getAttributes());
+							lp.width = WindowManager.LayoutParams.MATCH_PARENT;
 							// show it
 							alertDialog.show();
-						
-							
+
+
 						}
 					});;
-					
+
 				}
-				
-	//			String currentactivity = this.getClass().getSimpleName();
-	//			Log.d("Life cycle notes", currentactivity + " started." );
+
+				//			String currentactivity = this.getClass().getSimpleName();
+				//			Log.d("Life cycle notes", currentactivity + " started." );
 			}
 		}
-		
+
 	}
 	@Override
 	protected void onPause()
@@ -531,90 +525,90 @@ public class GameActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch(v.getId())
 		{
-//			case R.id.submit_card:
-//			{
-//				Log.d("Obinna", "Submit button pushed");
-//				ArrayList<String> cardstosubmit = new ArrayList<String>();
-//				//Submit cards to round and clear purgatory spots
-//				TextView purg1 = (TextView) findViewById(R.id.purg_1);
-//				String purg1text = purg1.getText().toString();
-//				if(!(purg1text.equals("")))
-//				{
-//					cardstosubmit.add(purg1text);
-//				}
-//				TextView purg2 = (TextView) findViewById(R.id.purg_2);
-//				String purg2text = purg2.getText().toString();
-//				if(!(purg2text.equals("")))
-//				{
-//					cardstosubmit.add(purg2text);
-//				}
-//				TextView purg3 = (TextView) findViewById(R.id.purg_3);
-//				String purg3text = purg3.getText().toString();
-//				if(!(purg3text.equals("")))
-//				{
-//					cardstosubmit.add(purg3text);
-//				}
-//				//Send cardstosubmit to server, clear textviews
-//				purg1.setText("");
-//				purg2.setText("");
-//				purg3.setText("");
-//				break;
-//			}
-			case R.id.purg_1:
-			case R.id.purg_2:
-			case R.id.purg_3:
+		//			case R.id.submit_card:
+		//			{
+		//				Log.d("Obinna", "Submit button pushed");
+		//				ArrayList<String> cardstosubmit = new ArrayList<String>();
+		//				//Submit cards to round and clear purgatory spots
+		//				TextView purg1 = (TextView) findViewById(R.id.purg_1);
+		//				String purg1text = purg1.getText().toString();
+		//				if(!(purg1text.equals("")))
+		//				{
+		//					cardstosubmit.add(purg1text);
+		//				}
+		//				TextView purg2 = (TextView) findViewById(R.id.purg_2);
+		//				String purg2text = purg2.getText().toString();
+		//				if(!(purg2text.equals("")))
+		//				{
+		//					cardstosubmit.add(purg2text);
+		//				}
+		//				TextView purg3 = (TextView) findViewById(R.id.purg_3);
+		//				String purg3text = purg3.getText().toString();
+		//				if(!(purg3text.equals("")))
+		//				{
+		//					cardstosubmit.add(purg3text);
+		//				}
+		//				//Send cardstosubmit to server, clear textviews
+		//				purg1.setText("");
+		//				purg2.setText("");
+		//				purg3.setText("");
+		//				break;
+		//			}
+		case R.id.purg_1:
+		case R.id.purg_2:
+		case R.id.purg_3:
+		{
+			final String text = ((TextView) v).getText().toString();
+			//((TextView) v).setText("");
+			if(!(text.equals("")))
 			{
-				final String text = ((TextView) v).getText().toString();
-				//((TextView) v).setText("");
-				if(!(text.equals("")))
+				//Launch AlertDialog to allow user remove card from purgatory
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
+				View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
+				TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
+				//String tviewtextString = handarray[arg2];
+				tView.setText(text);
+
+				alertDialogBuilder.setView(v1);
+				alertDialogBuilder
+				.setPositiveButton("Remove Card",
+						new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						//Remove from purgatory and add back to player hand
+						//Get card id as well
+						int cardid = playercardids.get(playercardtexts.indexOf(text));
+						pl.AddtoHand(new WhiteCard(cardid,text));
+						adapter.add(text);
+						//sLog.d("Obinna", "PLayer hand sze is " + pl.getHand().size());
+						adapter.notifyDataSetChanged();
+
+						((TextView)v).setText("");
+
+					}
+				});
+				alertDialogBuilder.
+				setNegativeButton("Cancel", new DialogInterface.OnClickListener()
 				{
-					//Launch AlertDialog to allow user remove card from purgatory
-					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
-					View v1 = getLayoutInflater().inflate(R.layout.cardpopup, null);
-					TextView tView = (TextView) v1.findViewById(R.id.card_fullview);
-					//String tviewtextString = handarray[arg2];
-					tView.setText(text);
-					
-					alertDialogBuilder.setView(v1);
-					alertDialogBuilder
-					.setPositiveButton("Remove Card",
-							new DialogInterface.OnClickListener() {
-								
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									// TODO Auto-generated method stub
-									//Remove from purgatory and add back to player hand
-									//Get card id as well
-									int cardid = playercardids.get(playercardtexts.indexOf(text));
-									pl.AddtoHand(new WhiteCard(cardid,text));
-									adapter.add(text);
-									//sLog.d("Obinna", "PLayer hand sze is " + pl.getHand().size());
-									adapter.notifyDataSetChanged();
-									
-									((TextView)v).setText("");
-									
-								}
-							});
-					alertDialogBuilder.
-					setNegativeButton("Cancel", new DialogInterface.OnClickListener() 
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// Get rid of dialog
-							dialog.cancel();
-						}
-					});
-					AlertDialog alertDialog = alertDialogBuilder.create();
-					WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-				    lp.copyFrom(alertDialog.getWindow().getAttributes());
-				    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-					// show it
-					alertDialog.show();
-				}
-				break;
-				
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Get rid of dialog
+						dialog.cancel();
+					}
+				});
+				AlertDialog alertDialog = alertDialogBuilder.create();
+				WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				lp.copyFrom(alertDialog.getWindow().getAttributes());
+				lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+				// show it
+				alertDialog.show();
 			}
-			
+			break;
+
+		}
+
 		}
 	}
 
