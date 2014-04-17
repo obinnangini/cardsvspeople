@@ -417,6 +417,7 @@ public class AsyncTasks
 		
 	}
 	
+
 	static class LoginUser extends AsyncTask<String, Void, String>
 	{
 
@@ -424,11 +425,18 @@ public class AsyncTasks
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			String username = params[0];
-			
+			String password = params[1];
 		
-			String result = executeHTTPGET("http://cardsvspeople.herokuapp.com/user/"+username);
-			
-			
+			 String urlParameters = "";
+	           try {
+	                  urlParameters = "name=" + URLEncoder.encode(username, "UTF-8") +
+	                  "&password=" + URLEncoder.encode(password, "UTF-8");
+	              } catch (UnsupportedEncodingException e) {
+	                  // TODO Auto-generated catch block
+	                  e.printStackTrace();
+	              }
+	           
+			String result =  executeHTTP("POST","http://cardsvspeople.herokuapp.com/login", urlParameters);    
 	           
 			return result;
 		}
