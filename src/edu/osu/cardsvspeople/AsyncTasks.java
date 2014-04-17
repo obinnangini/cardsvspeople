@@ -31,13 +31,14 @@ public class AsyncTasks
 	 * @author obinn_000
 	 *
 	 */
-	static class GameList extends AsyncTask<String, Void,Map<String,ArrayList<String>>>
+	static class GameList extends AsyncTask<String, Void,MenuInputBundle>
 	{
 
 		@Override
-		protected Map<String,ArrayList<String>> doInBackground(String... params) 
+		protected MenuInputBundle doInBackground(String... params) 
 		{
 			String username = params[0];
+			String gamename = null;
 			String response = executeHTTPGET("https://cardsvspeople.herokuapp.com/user/" + username);
 			Map<String,ArrayList<String>> gameplayerslist = null;
 			if (response != null)
@@ -48,7 +49,7 @@ public class AsyncTasks
 				try {
 					JSONObject object = (JSONObject) parser.parse(response);
 					//String username = (String) object.get("name");
-					String gamename = (String) object.get("nickname");
+					gamename = (String) object.get("nickname");
 					//System.out.println("Players username is " + username);
 					//System.out.println("Players gamename is " + gamename);
 					JSONArray gamelist = (JSONArray) object.get("games");
@@ -86,7 +87,8 @@ public class AsyncTasks
 					e.printStackTrace();
 				}
 			}
-				return gameplayerslist;
+			MenuInputBundle bundle = new MenuInputBundle(gamename, gameplayerslist);
+				return bundle;
 			}
 		
 	}

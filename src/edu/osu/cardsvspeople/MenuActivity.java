@@ -29,7 +29,7 @@ public class MenuActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		Intent intent = getIntent();
 		username = intent.getStringExtra("username");
-		gamename = intent.getStringExtra("gamename");
+		//gamename = intent.getStringExtra("gamename");
 		//username = "obinnangini";//To see user view
 		//gamename = "Obinna";
 		//username = "btmills";//To see dealer view
@@ -38,8 +38,6 @@ public class MenuActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_menu);
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " created." );
-		TextView welcome = (TextView) findViewById(R.id.bannertext);
-		welcome.setText("Welcome " + gamename + "!");
 		Button startButton = (Button)findViewById(R.id.game_start_button);
 		startButton.setOnClickListener(this);
 		Button helpButton = (Button) findViewById(R.id.help_button);
@@ -53,8 +51,11 @@ public class MenuActivity extends Activity implements OnClickListener {
 
 		AsyncTasks.GameList task = new GameList();
 		task.execute(username);
+		MenuInputBundle result;
 		try {
-			gameplayerslist = task.get();
+			result = task.get();
+			gameplayerslist = result.getList();
+			gamename = result.getGamename();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,6 +80,8 @@ public class MenuActivity extends Activity implements OnClickListener {
 			//				}
 			//			//System.out.println();
 			//		}
+			TextView welcome = (TextView) findViewById(R.id.bannertext);
+			welcome.setText("Welcome " + gamename + "!");
 			final String [] gameids= gameplayerslist.keySet().toArray(new String[gameplayerslist.keySet().size()]);
 			ArrayList<ArrayList<String>> gameplayers = new ArrayList<ArrayList<String>>();
 			for (String str : gameplayerslist.keySet())
