@@ -64,8 +64,9 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_alignRight="@+id/textView1"
-       android:layout_centerVertical="true" 
-       android:text=""/>
+       android:layout_centerVertical="true"
+       android:text=""
+       android:visibility="invisible" />
 
     <Button
         android:id="@+id/buttonCheat"
@@ -74,7 +75,8 @@
         android:layout_below="@+id/buttonLogin"
         android:layout_centerHorizontal="true"
         android:onClick="cheat"
-        android:text="@string/Cheat" />
+        android:text="@string/Cheat"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/buttonLogin"
