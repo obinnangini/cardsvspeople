@@ -18,6 +18,10 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+     <instrumentation android:name="android.test.InstrumentationTestRunner"
+    android:targetPackage="edu.osu.cardsvspeople"
+    android:label="Tests" />
+    
 
     <application
         android:allowBackup="true"
@@ -73,6 +77,10 @@
         <meta-data 
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyD2ShwL525VOKalqx-TV8GwWUPf_P54k6Y"/>
+        
+       
+        <uses-library android:name="android.test.runner" />
+    
         
     </application>
 
