@@ -41,6 +41,12 @@
         android:text="@string/ongoing_game"
         />
     
+    <Button 
+        android:id="@+id/listrefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Refresh"  />
+    
     <!-- List View to show ongoing games, to be populated in app at some time -->
     <ListView
         android:id="@+id/game_list"

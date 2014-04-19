@@ -130,11 +130,21 @@ public class GameActivity extends Activity implements OnClickListener {
 					}
 					else
 					{
-						dealermsg.setText("All players have not yet submitted cards. Press back and re select game to check for new cards");
+						//back and re select game 
+						dealermsg.setText("All players have not yet submitted cards. Press refresh to check for new cards");
 					}
 					TextView blackcardtext = (TextView) findViewById(R.id.dealer_black_card);
 					TextView scoreView = (TextView) findViewById(R.id.scoreview);
 					scoreView.setText("Score: " + Integer.toString(pl.getScore()));
+					Button refreshButton = (Button) findViewById(R.id.dealerrefresh);
+					refreshButton.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							onStart();
+						}
+					});
 					blackcardtext.setText(currGame.getCurrentRound().getBlackCard().getText());
 					blackcardtext.setOnClickListener(new OnClickListener()
 					{

@@ -20,6 +20,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import android.os.AsyncTask;
+import android.text.Html;
 import android.util.Log;
 
 public class AsyncTasks 
@@ -232,6 +233,7 @@ public class AsyncTasks
 								JSONObject temp2 = (JSONObject) handArray.get(y);
 								int cardid = (int)((Long) temp2.get("id")).longValue();
 								String cardtext = (String) temp2.get("text");
+								cardtext = Html.fromHtml(cardtext).toString();
 								//System.out.println(cardtext);
 								tempHand.add(new WhiteCard(cardid, cardtext));
 							}
@@ -252,6 +254,7 @@ public class AsyncTasks
 						//System.out.println("Current round dealer is " + dealername);
 						JSONObject blCard = (JSONObject) object2.get("question");
 						String blackcardtext = (String) blCard.get("text");
+						blackcardtext = Html.fromHtml(blackcardtext).toString();
 						int blackccardspaces= (int)((Long) blCard.get("numAnswers")).longValue();
 						roundBlackCard = new BlackCard(blackcardtext, blackccardspaces);
 						//System.out.println("Black card text is " + blackcardtext);
@@ -271,6 +274,7 @@ public class AsyncTasks
 									JSONObject submitObj = (JSONObject) playersubmitlist.get(a);
 									int cardid = Integer.parseInt((String)submitObj.get("id"));
 									String cardtext = (String) submitObj.get("text");
+									cardtext = Html.fromHtml(cardtext).toString();
 									//System.out.println(cardtext);
 									WhiteCard tempCard = new WhiteCard(cardid,cardtext);
 									usersubmissons.add(tempCard);
@@ -459,6 +463,7 @@ public class AsyncTasks
 				JSONObject jsonObject = (JSONObject) array.get(x);
 				int cardid = (int)((Long) jsonObject.get("id")).longValue();
 				String cardtext = (String) jsonObject.get("text");
+				cardtext = Html.fromHtml(cardtext).toString();
 				cards.add(new WhiteCard(cardid, cardtext));
 				//System.out.println(Integer.toString(cardid) + " : " + cardtext);
 			}

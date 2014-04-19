@@ -38,6 +38,80 @@ public class MenuActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_menu);
 		String currentactivity = this.getClass().getSimpleName();
 		Log.d("Life cycle notes", currentactivity + " created." );
+		
+	}
+
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		String currentactivity = this.getClass().getSimpleName();
+		Log.d("Life cycle notes", currentactivity + " started." );
+		setUpView();
+	}
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
+		String currentactivity = this.getClass().getSimpleName();
+		Log.d("Life cycle notes", currentactivity + " paused." );
+	}
+	@Override
+	public void onResume() 
+	{
+		super.onResume();
+		String currentactivity = this.getClass().getSimpleName();
+		Log.d("Life cycle notes", currentactivity + " resumed." );
+	}
+	@Override
+	public void onClick(View v) {
+
+		// TODO Auto-generated method stub
+		switch(v.getId())
+		{
+			case R.id.game_start_button:
+			{
+				//Use an intent to start game Activity, and pass user's game name
+				//Fetch game name from user class, or server
+				Intent intent = new Intent(MenuActivity.this,PlayerLocation.class);
+				intent.putExtra("username", username);
+				intent.putExtra("gamename", gamename);
+				startActivity(intent);
+				break;
+			}
+			case R.id.help_button:
+			{
+				Log.d("Help Button", "Button pressed");
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MenuActivity.this);
+				alertDialogBuilder.setMessage(getResources().getString(R.string.help_message));
+				alertDialogBuilder
+				.setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						dialog.cancel();
+					}
+				});
+	
+				// create alert dialog
+				AlertDialog alertDialog = alertDialogBuilder.create();
+	
+				// show it
+				alertDialog.show();
+				break;
+	
+			}
+			case R.id.listrefresh:
+			{
+				setUpView();
+			}
+		}
+	}
+
+	private void setUpView()
+	{
 		Button startButton = (Button)findViewById(R.id.game_start_button);
 		startButton.setOnClickListener(this);
 		Button helpButton = (Button) findViewById(R.id.help_button);
@@ -110,72 +184,5 @@ public class MenuActivity extends Activity implements OnClickListener {
 			});
 		}
 	}
-
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		String currentactivity = this.getClass().getSimpleName();
-		Log.d("Life cycle notes", currentactivity + " started." );
-	}
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
-		String currentactivity = this.getClass().getSimpleName();
-		Log.d("Life cycle notes", currentactivity + " paused." );
-	}
-	@Override
-	public void onResume() 
-	{
-		super.onResume();
-		String currentactivity = this.getClass().getSimpleName();
-		Log.d("Life cycle notes", currentactivity + " resumed." );
-	}
-	@Override
-	public void onClick(View v) {
-
-		// TODO Auto-generated method stub
-		switch(v.getId())
-		{
-		case R.id.game_start_button:
-		{
-			//Use an intent to start game Activity, and pass user's game name
-			//Fetch game name from user class, or server
-			Intent intent = new Intent(MenuActivity.this,PlayerLocation.class);
-			intent.putExtra("username", username);
-			intent.putExtra("gamename", gamename);
-			startActivity(intent);
-			break;
-		}
-		case R.id.help_button:
-		{
-			Log.d("Help Button", "Button pressed");
-			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MenuActivity.this);
-			alertDialogBuilder.setMessage(getResources().getString(R.string.help_message));
-			alertDialogBuilder
-			.setPositiveButton("OK",
-					new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					dialog.cancel();
-				}
-			});
-
-			// create alert dialog
-			AlertDialog alertDialog = alertDialogBuilder.create();
-
-			// show it
-			alertDialog.show();
-			break;
-
-		}
-
-		}
-	}
-
-
 
 }
